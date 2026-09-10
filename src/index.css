@@ -19,10 +19,11 @@
   --line-soft: rgba(25, 21, 18, 0.07);
 
   /* 글꼴 */
-  --serif: 'Times New Roman', 'Tinos', 'Nanum Myeongjo', 'Apple SD Gothic Neo', Times, serif;
-  --sans: 'Source Sans 3', 'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui,
-    sans-serif;
-  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+  /* 앞쪽은 영문용, 뒤쪽은 한글용입니다.
+     영문 글꼴에는 한글이 없어서 한글 글자는 자동으로 뒤쪽 글꼴로 넘어갑니다. */
+  --serif: 'Times New Roman', 'Tinos', 'Nanum Myeongjo', Times, serif;
+  --sans: 'Source Sans 3', 'Noto Sans KR', 'Pretendard', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Noto Sans KR', monospace;
 
   /* 간격 */
   --pad: clamp(20px, 5vw, 72px);
