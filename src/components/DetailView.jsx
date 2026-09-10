@@ -60,7 +60,10 @@ export default function DetailView({ item, onClose }) {
         </div>
 
         <div className="detail__body">
-          <p className="kicker">{isPaper ? 'Paper' : 'Game'}</p>
+          <p className="detail__kicker">
+            <span className="kicker">{isPaper ? 'Paper' : 'Game'}</span>
+            <span className="badge-sample">Sample — 예시 데이터</span>
+          </p>
           <h2 className="detail__title">{item.title}</h2>
           <p className="detail__sub">{isPaper ? item.titleEn : item.subtitle}</p>
 

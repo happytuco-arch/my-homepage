@@ -10,6 +10,8 @@ export const profile = {
   role: 'Game Design · Research',
   intro: '게임제작과정 및 논문 투고과정을 프로젝트로서 기록합니다.',
   email: 'happytuco@g.skku.edu',
+  // 첫 화면의 'Based in' 에 표시됩니다
+  based: 'SKKU Game Design',
   location: 'Seoul, Republic of Korea',
   affiliation: '성균관대학교 · AI기반 콘텐츠 창업 워크숍',
   year: '2026',
@@ -24,10 +26,20 @@ export const profile = {
     { label: 'Writing', value: 'HCI · Game Studies · Education' },
     { label: 'Status', value: '협업 및 투고 문의 환영' },
   ],
-  links: [
-    { label: 'Email', value: 'happytuco@g.skku.edu', href: 'mailto:happytuco@g.skku.edu' },
-    { label: 'GitHub', value: 'github.com/junehyuk', href: '#' },
-    { label: 'Notion', value: 'Devlog Archive', href: '#' },
+  // About 화면 아래쪽의 링크 아이콘
+  social: [
+    {
+      id: 'linkedin',
+      label: 'LinkedIn',
+      note: '조준혁 · 게임디자인학과',
+      href: 'https://www.linkedin.com/in/%EC%A1%B0%EC%A4%80%ED%98%81-%EA%B2%8C%EC%9E%84%EB%94%94%EC%9E%90%EC%9D%B8%ED%95%99%EA%B3%BC-a4b757435/',
+    },
+    {
+      id: 'skku-game',
+      label: 'SKKU Game Design',
+      note: '성균관대학교 게임디자인학과',
+      href: 'https://game.skku.edu/game/index.do',
+    },
   ],
 }
 

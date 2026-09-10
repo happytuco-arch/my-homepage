@@ -1,5 +1,6 @@
 import { profile, games, papers } from '../data/portfolio'
 import LogoMorph from './LogoMorph'
+import Wordmark from './Wordmark'
 
 const TICKER = [
   'Now in Development',
@@ -25,7 +26,7 @@ export default function Hero() {
 
       <h1 className="hero__name">
         <LogoMorph compact className="logo logo--hero" />
-        <span>{profile.nameKo}</span>
+        <Wordmark className="wordmark wordmark--hero" />
       </h1>
 
       <div className="hero__body">
@@ -38,7 +39,7 @@ export default function Hero() {
           </div>
           <div>
             <dt>Based in</dt>
-            <dd>{profile.location}</dd>
+            <dd>{profile.based}</dd>
           </div>
           <div>
             <dt>Contact</dt>

@@ -6,7 +6,10 @@ function GameCard({ item, size, onOpen }) {
     <button className={`card card--${size}`} onClick={() => onOpen(item)}>
       <div className="card__figure">
         <span className="card__index">{item.index}</span>
-        <span className="card__status">{item.status}</span>
+        <span className="card__badges">
+          <span className="badge-sample">Sample</span>
+          <span className="card__status">{item.status}</span>
+        </span>
         <SmartImage className="card__img" src={item.image} alt={item.title} />
         <span className="card__view">
           <span>View Project</span>
@@ -37,8 +40,8 @@ export default function GamesTab({ onOpen }) {
           <h2 className="section__title">Games</h2>
         </div>
         <p className="section__note">
-          기획부터 도트 리소스, 밸런싱까지 직접 만든 프로젝트입니다. 카드를 누르면 제작 과정과
-          의사결정 기록을 볼 수 있습니다.
+          아래 작품은 화면 구성을 보여 주기 위한 <b>예시 데이터</b>입니다. 실제 제작물이
+          아니며, 나중에 진짜 작품으로 교체할 자리입니다.
         </p>
       </div>
 

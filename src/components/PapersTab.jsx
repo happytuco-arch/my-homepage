@@ -9,8 +9,8 @@ export default function PapersTab({ onOpen }) {
           <h2 className="section__title">Papers</h2>
         </div>
         <p className="section__note">
-          각 카드의 한 줄 요약과 키워드로 주제를 먼저 파악할 수 있습니다. 카드를 누르면 초록과 기여
-          내용을 볼 수 있습니다.
+          아래 논문은 화면 구성을 보여 주기 위한 <b>예시 데이터</b>입니다. 실제 투고한 논문이
+          아니며, 나중에 진짜 연구로 교체할 자리입니다.
         </p>
       </div>
 
@@ -21,6 +21,7 @@ export default function PapersTab({ onOpen }) {
               <button className="paper" onClick={() => onOpen(p)}>
                 <div className="paper__top">
                   <span className="paper__index">{p.index}</span>
+                  <span className="badge-sample">Sample</span>
                   <span className="chip chip--key">{p.field}</span>
                   <span className="chip">{p.status}</span>
                 </div>
