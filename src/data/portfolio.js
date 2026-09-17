@@ -43,6 +43,27 @@ export const profile = {
   ],
 }
 
+// ─────────────────────────────────────────────────────────────
+//  About 화면에 쓰는 글
+//
+//  사이트 화면이 모두 영문이라 여기도 영문으로 적습니다.
+//  (위 profile.statement · profile.facts 는 예전 한글판입니다.
+//   화면에서는 더 이상 쓰지 않지만, 원문으로 남겨 두었습니다)
+//
+//  한눈에 읽히도록 짧게 씁니다 — 긴 설명은 작품과 논문이 대신합니다.
+// ─────────────────────────────────────────────────────────────
+
+export const about = {
+  quote: 'I keep the judgement, not just the result.',
+  line: 'Games teach through the body, papers through sentences. Both ask what makes learning feel good.',
+  facts: [
+    { label: 'Focus', value: 'Game systems · Learning experience' },
+    { label: 'Tools', value: 'Unity · Aseprite · Python · React' },
+    { label: 'Writing', value: 'HCI · Game studies · Education' },
+    { label: 'Status', value: 'Open to collaboration' },
+  ],
+}
+
 export const games = [
   {
     id: 'g1',
