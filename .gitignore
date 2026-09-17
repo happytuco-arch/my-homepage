@@ -15,10 +15,11 @@ dist/
 dist-ssr
 *.local
 
-# 환경 변수 파일 — 비밀키가 들어가는 곳이라 절대 올리지 않습니다
+# 환경 변수 파일 — 열쇠가 들어가는 곳이라 절대 올리지 않습니다.
+# .env 로 시작하는 파일은 모두 막고, 빈 서식인 .env.example 만 예외로 둡니다.
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*

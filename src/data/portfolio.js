@@ -155,89 +155,68 @@ export const gallery = [
   },
 ]
 
+// ─────────────────────────────────────────────────────────────
+//  선행연구 (Prior Work)
+//
+//  이 프로젝트가 어떤 연구 흐름 위에 서 있는지 보여 주는 실제 논문들입니다.
+//  서지 정보(저자·학회지·연도·DOI)는 원문에서 확인한 값입니다.
+//  citations 는 OpenAlex 기준이며, checkedOn 날짜 시점의 값입니다.
+//  (데이터베이스마다 수치가 다릅니다 — Semantic Scholar는 더 높게 나옵니다)
+//
+//  takeaways 는 논문의 주장이 아니라, 이 프로젝트가 받아들인 관점입니다.
+// ─────────────────────────────────────────────────────────────
+
 export const papers = [
   {
     id: 'p1',
     index: '01',
-    field: 'Game Studies',
-    title: '실패의 리듬: 짧은 재시도 주기가 플레이어 지속성에 미치는 영향',
-    titleEn: 'The Rhythm of Failure: Short Retry Cycles and Player Persistence',
-    venue: '한국게임학회 논문지',
-    year: '2026',
-    status: '투고 준비',
+    field: 'Survey',
+    title: 'Large Language Models and Games: A Survey and Roadmap',
+    titleKo: '거대 언어 모델과 게임: 서베이와 로드맵',
+    authors: 'R. Gallotta, G. Todd, M. Zammit, S. Earle, A. Liapis, J. Togelius, G. N. Yannakakis',
+    venue: 'IEEE Transactions on Games',
+    venueNote: 'SCIE 등재 학술지',
+    year: '2024',
+    citations: 118,
+    citationSource: 'OpenAlex',
+    checkedOn: '2026-09-10',
+    doi: '10.1109/TG.2024.3461510',
+    link: 'https://doi.org/10.1109/TG.2024.3461510',
     summary:
-      '죽은 뒤 다시 시작하기까지의 시간이 3초를 넘어가면 이탈률이 급격히 오른다는 가설을 실측했습니다.',
-    keywords: ['난이도 설계', '재시도 주기', '플레이어 이탈'],
-    image: '/images/dot-world.svg',
+      '거대 언어 모델이 게임 안에서 맡을 수 있는 역할을 유형으로 정리하고, 아직 시도되지 않은 영역과 한계를 함께 짚은 이 분야의 대표 서베이입니다.',
     abstract:
-      '액션 게임에서 사망은 처벌이 아니라 학습의 단위입니다. 본 연구는 재시도까지의 대기 시간을 1초부터 8초까지 조작한 네 가지 빌드를 제작하고, 참가자 62명의 플레이 로그를 분석했습니다. 대기 시간이 3초를 넘는 조건에서 세션 이탈률이 유의하게 증가했으며(p < .01), 주관적 난이도 평가는 조건 간 차이가 없었습니다. 이는 플레이어가 어려움 자체보다 흐름의 끊김에 반응한다는 점을 시사합니다.',
-    contributions: [
-      '재시도 대기 시간을 독립 변인으로 분리한 실험 빌드 4종 제작',
-      '62명 플레이 로그 기반 이탈 지점 정량 분석',
-      '난이도 지각과 이탈 행동의 불일치 확인',
+      '이 논문은 게임 분야에서 거대 언어 모델(LLM)이 어떻게 활용되고 있는지 전반을 조사합니다. 게임 안에서 또 게임을 위해 LLM이 쓰이는 다양한 응용을 정리하고, LLM이 맡을 수 있는 서로 다른 역할들을 구분합니다. 아직 충분히 탐색되지 않은 영역과 앞으로 유망한 방향을 제시하며, 게임 영역에서 LLM이 가진 가능성과 한계를 함께 정리합니다.',
+    takeaways: [
+      '"LLM으로 무엇을 만들까"보다 "LLM에게 어떤 역할을 맡길까"를 먼저 정한다',
+      '가능성만이 아니라 한계도 같이 기록해야 설계 판단의 근거가 남는다',
+      '개별 기법이 아니라 연구 지형 전체를 먼저 보고 내 작업의 자리를 잡는다',
     ],
+    keywords: ['거대 언어 모델', '게임 연구 지형', '역할 유형화'],
   },
   {
     id: 'p2',
     index: '02',
-    field: 'HCI',
-    title: '소리로만 주는 피드백: 텍스트 없는 퍼즐 게임의 학습 곡선',
-    titleEn: 'Feedback Without Words: Learning Curves in Audio-Only Puzzle Games',
-    venue: 'HCI Korea',
-    year: '2025',
-    status: '게재',
+    field: 'Level Generation',
+    title: 'Level Generation Through Large Language Models',
+    titleKo: '거대 언어 모델을 이용한 게임 레벨 생성',
+    authors: 'G. Todd, S. Earle, M. U. Nasir, M. C. Green, J. Togelius',
+    venue: 'Foundations of Digital Games (FDG)',
+    venueNote: '게임 연구 대표 학회',
+    year: '2023',
+    citations: 83,
+    citationSource: 'OpenAlex',
+    checkedOn: '2026-09-10',
+    doi: '10.1145/3582437.3587211',
+    link: 'https://doi.org/10.1145/3582437.3587211',
     summary:
-      '정답 여부를 글자 대신 화음으로만 알려 줄 때, 플레이어는 평균 1분 40초 만에 규칙을 스스로 찾아냅니다.',
-    keywords: ['청각 피드백', '튜토리얼 없는 학습', '접근성'],
-    image: '/images/dot-blocks.svg',
+      '퍼즐 게임 소코반의 레벨을 언어 모델로 생성해 보고, 학습 데이터의 양이 늘어날수록 결과가 급격히 좋아진다는 것을 보였습니다.',
     abstract:
-      'BLOCK CHOIR 프로토타입을 도구로 삼아, 시각·텍스트 안내를 모두 제거하고 청각 피드백만 남긴 조건에서의 규칙 습득 과정을 관찰했습니다. 참가자 12명 중 11명이 외부 도움 없이 핵심 규칙에 도달했고, 평균 소요 시간은 100초였습니다. 사후 인터뷰에서 참가자들은 "틀렸다"는 감각을 불협화음으로 먼저 인지했다고 보고했습니다.',
-    contributions: [
-      '청각 단독 피드백 조건의 규칙 습득 시간 측정',
-      '색각 이상 사용자를 포함한 접근성 대안 제시',
-      '무텍스트 튜토리얼 설계 가이드라인 3항 도출',
+      '이 논문은 거대 언어 모델로 퍼즐 게임 소코반의 레벨을 생성할 수 있는지 검증합니다. 게임 레벨은 복잡한 기능적 제약과 2차원 이상의 공간 관계를 가지고 있어, 언어 모델이 학습 과정에서 흔히 접하는 데이터와는 성격이 크게 다릅니다. 실험 결과 언어 모델은 실제로 플레이 가능한 레벨을 만들어 냈으며, 그 성능은 학습 데이터셋의 크기에 따라 극적으로 향상되었습니다.',
+    takeaways: [
+      '레벨은 글이 아니라 규칙이다 — 생성 결과는 반드시 플레이 가능성으로 검증한다',
+      '모델을 바꾸기 전에 데이터를 먼저 늘리는 쪽이 효과가 크다',
+      '제작 과정에서 만든 레벨 기록 자체가 다음 생성의 재료가 된다',
     ],
-  },
-  {
-    id: 'p3',
-    index: '03',
-    field: 'Education',
-    title: '죄책감 없는 습관 설계: 결석 페널티를 제거한 돌봄 게임의 잔존율',
-    titleEn: 'Habit Without Guilt: Retention in Care Games Without Absence Penalties',
-    venue: '한국콘텐츠학회 (심사 중)',
-    year: '2025',
-    status: '심사 중',
-    summary:
-      '접속하지 않은 날을 벌하지 않아도 4주 잔존율 38%를 유지할 수 있는지 실제 출시 데이터로 검증했습니다.',
-    keywords: ['습관 형성', '돌봄 게임', '잔존율'],
-    image: '/images/dot-hero.svg',
-    abstract:
-      '다수의 돌봄형 게임은 접속하지 않은 사용자에게 캐릭터의 상태 악화라는 형태로 페널티를 부과합니다. 본 연구는 이러한 장치를 완전히 제거한 LITTLE KEEPER의 출시 후 4주 로그(N = 1,204)를 분석하여, 페널티 없이도 비교 가능한 수준의 잔존율이 달성됨을 보였습니다. 재접속 동기는 성장 확인보다 스프라이트 변화에 대한 호기심에서 더 강하게 나타났습니다.',
-    contributions: [
-      '결석 페널티 제거 조건의 실서비스 잔존 데이터 확보',
-      '재접속 동기 요인의 인터뷰 기반 유형화',
-      '비강압적 습관 설계 패턴 제안',
-    ],
-  },
-  {
-    id: 'p4',
-    index: '04',
-    field: 'Method',
-    title: '제작 기록을 데이터로: 개발 로그의 구조화와 회고 분석',
-    titleEn: 'Devlogs as Data: Structuring Production Records for Retrospective Analysis',
-    venue: '워크숍 발표 예정',
-    year: '2026',
-    status: '초고',
-    summary:
-      '흩어진 개발 일지를 의사결정 단위로 쪼개면, 프로젝트가 어디서 방향을 틀었는지 되짚을 수 있습니다.',
-    keywords: ['개발 로그', '회고', '연구 방법론'],
-    image: '/images/dot-dungeon.png',
-    abstract:
-      '개인 개발자의 일지는 대개 서술형으로 축적되어 분석에 쓰이지 못한 채 남습니다. 본 초고는 로그를 "결정–근거–결과" 삼항으로 구조화하는 간단한 기록 양식을 제안하고, 저자 본인의 2년치 로그 480건에 적용한 사례를 보고합니다.',
-    contributions: [
-      '결정–근거–결과 삼항 기록 양식 제안',
-      '480건의 개인 로그 재구조화 사례',
-      '회고 시점의 편향을 줄이는 기록 시점 규칙',
-    ],
+    keywords: ['절차적 생성', '소코반', '데이터셋 규모'],
   },
 ]

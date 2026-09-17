@@ -1,6 +1,4 @@
-import { profile, games, papers } from '../data/portfolio'
-import LogoMorph from './LogoMorph'
-import Wordmark from './Wordmark'
+import { profile } from '../data/portfolio'
 
 const TICKER = [
   'Now in Development',
@@ -11,27 +9,33 @@ const TICKER = [
   'Little Keeper — Released',
 ]
 
+/**
+ * 첫 화면 — 도록의 속표지.
+ *
+ * 로고 기호와 큰 워드마크를 걷어내고, 세리프 한 문장만 세워 둡니다.
+ * 이름은 상단 메뉴에 이미 있으므로 여기서 다시 외치지 않습니다.
+ */
 export default function Hero() {
   return (
     <section className="wrap hero">
       <div className="hero__top">
         <p className="badge">
           <i />
-          Now in Development · {profile.year}
+          Now in development · {profile.year}
         </p>
-        <p className="kicker">
-          {games.length} Games — {papers.length} Papers
-        </p>
+        <p className="kicker">Seoul, Republic of Korea</p>
       </div>
 
+      <p className="hero__label">Selected work — {profile.year}</p>
+
       <h1 className="hero__name">
-        <LogoMorph compact className="logo logo--hero" />
-        <Wordmark className="wordmark wordmark--hero" />
+        Games &amp;<br />
+        research,
+        <br />
+        as a record.
       </h1>
 
       <div className="hero__body">
-        <blockquote className="hero__quote">“{profile.intro}”</blockquote>
-
         <dl className="hero__meta">
           <div>
             <dt>Role</dt>

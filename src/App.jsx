@@ -2,28 +2,45 @@ import { useEffect, useState } from 'react'
 import Nav from './components/Nav'
 import Hero, { Ticker } from './components/Hero'
 import GamesTab from './components/GamesTab'
-import ImagesTab from './components/ImagesTab'
 import PapersTab from './components/PapersTab'
 import AboutContact from './components/AboutContact'
 import DetailView from './components/DetailView'
+import ProjectDetail from './components/ProjectDetail'
+import AdminLogin from './components/AdminLogin'
+import AdminPanel from './components/AdminPanel'
+import AdminProvider from './admin/AdminProvider'
+import { useAdmin } from './admin/AdminContext'
 
 /**
  * 화면 구성
  *
- *  view = 'home'    첫 화면 → Games → About &amp; Contact  (세 장을 스크롤로 넘김)
- *  view = 'images'  이미지만 있는 독립 화면
+ *  view = 'home'    첫 화면 → Works → About &amp; Contact  (세 장을 스크롤로 넘김)
  *  view = 'papers'  논문만 있는 독립 화면
+ *
+ *  사진·영상은 Works 가 Supabase 에서 불러와 함께 보여 주므로,
+ *  따로 있던 Images 화면은 없앴습니다.
  */
 export default function App() {
+  return (
+    <AdminProvider>
+      <Site />
+    </AdminProvider>
+  )
+}
+
+function Site() {
+  const { isAdmin } = useAdmin()
   const [view, setView] = useState('home')
   const [detail, setDetail] = useState(null)
   const [scrollTo, setScrollTo] = useState(null)
+  // 'login' 또는 'panel' — 관리자 창이 열려 있는 상태
+  const [admin, setAdmin] = useState(null)
 
   // 상단 메뉴 클릭 처리
   const go = (target) => {
     setDetail(null)
 
-    if (target === 'images' || target === 'papers') {
+    if (target === 'papers') {
       setView(target)
       setScrollTo('top')
       return
@@ -74,7 +91,7 @@ export default function App() {
 
   return (
     <>
-      <Nav view={view} onGo={go} />
+      <Nav view={view} onGo={go} onAdmin={() => setAdmin(isAdmin ? 'panel' : 'login')} />
 
       <main>
         {view === 'home' && (
@@ -97,12 +114,6 @@ export default function App() {
           </>
         )}
 
-        {view === 'images' && (
-          <section className="snap snap--work snap--solo">
-            <ImagesTab />
-          </section>
-        )}
-
         {view === 'papers' && (
           <section className="snap snap--work snap--solo">
             <PapersTab onOpen={setDetail} />
@@ -110,7 +121,18 @@ export default function App() {
         )}
       </main>
 
-      {detail && <DetailView item={detail} onClose={() => setDetail(null)} />}
+      {/* Supabase 에서 온 작품과 예시 데이터(논문)는 담긴 칸이 달라 보는 화면도 다릅니다 */}
+      {detail &&
+        (detail.source === 'project' ? (
+          <ProjectDetail item={detail} onClose={() => setDetail(null)} />
+        ) : (
+          <DetailView item={detail} onClose={() => setDetail(null)} />
+        ))}
+
+      {admin === 'login' && (
+        // 로그인에 성공하면 곧바로 올리기 화면으로 넘어갑니다
+        <AdminLogin onClose={() => setAdmin(null)} onSuccess={() => setAdmin('panel')} />      )}
+      {admin === 'panel' && <AdminPanel onClose={() => setAdmin(null)} />}
     </>
   )
 }

@@ -894,6 +894,13 @@ a {
   line-height: 1.4;
 }
 
+.paper__authors {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
 .paper__summary {
   margin: 16px 0 0;
   font-size: 14.5px;
@@ -1201,8 +1208,67 @@ a {
   font-size: 15px;
 }
 
+/* 논문 표지 대용 — 서지 정보를 크게 보여 줍니다 */
+.detail__cover {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: clamp(24px, 4vw, 48px);
+  background: var(--ink);
+  color: var(--ivory);
+}
+
+.detail__cover .kicker {
+  color: var(--key);
+}
+
+.detail__cover-venue {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  margin: 10px 0 0;
+}
+
+.detail__cover-year {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--key);
+  margin: 4px 0 0;
+}
+
+.detail__cover-cite {
+  margin: auto 0 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(247, 242, 231, 0.25);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  line-height: 1.7;
+  color: rgba(247, 242, 231, 0.7);
+}
+
+.detail__cover-cite b {
+  color: var(--ivory);
+  font-size: 15px;
+}
+
+.detail__listlabel {
+  margin: 24px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 .detail__list {
-  margin: 22px 0 0;
+  margin: 12px 0 0;
   padding: 0;
   list-style: none;
   display: grid;
@@ -1846,17 +1912,19 @@ a {
 
   /* ---- Papers : 2열 × 2줄 ---- */
 
+  /* 편수가 적을 때 카드가 억지로 늘어나지 않도록 내용 높이에 맞춥니다 */
   .panel__body .masonry--2 {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: min-content;
+    align-content: start;
   }
 
   .panel__body .paper {
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
-    padding: clamp(12px, 1.7vh, 22px);
-    overflow: hidden;
+    padding: clamp(14px, 2vh, 26px);
   }
 
   /* 세로로 눌려 사라지지 않도록 각 줄의 높이를 고정합니다 */
@@ -1895,7 +1963,6 @@ a {
   }
 
   .panel__body .paper__keys {
-    margin-top: auto;
     padding-top: 10px;
   }
 
@@ -2079,5 +2146,2005 @@ a {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   관리자 — 로그인 / 파일 올리기
+   ============================================================ */
+
+/* ---------- 상단 메뉴의 Admin 단추 ---------- */
+
+.nav__link--admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 10px;
+  margin-left: 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.nav__link--admin::after {
+  display: none;
+}
+
+.nav__link--admin:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* 로그인한 상태 */
+.nav__link--admin.is-on {
+  background: var(--key-wash);
+  border-color: rgba(217, 146, 61, 0.5);
+  color: var(--key-ink);
+}
+
+.nav__count {
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--key);
+  color: #1c1409;
+}
+
+/* ---------- 관리자 창 ---------- */
+
+.adminbox {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  box-shadow: 10px 10px 0 rgba(25, 21, 18, 0.35);
+  padding: clamp(22px, 3.4vw, 38px);
+  animation: fade 0.3s ease;
+}
+
+.adminbox--login {
+  max-width: 440px;
+}
+
+.adminbox--panel {
+  max-width: 780px;
+  max-height: calc(100dvh - 2 * clamp(12px, 3vw, 40px));
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.adminbox__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.adminbox__title {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-top: 6px;
+}
+
+.adminbox__lead {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.adminbox__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+/* .btn 은 기본값이 크고 위 여백이 넓어, 창 안에서는 작은 것을 씁니다 */
+.btn--sm {
+  margin-top: 0;
+  padding: 12px 22px;
+}
+
+.btn--sm:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.btn-ghost {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.btn-ghost--danger:hover {
+  border-color: #a33a2a;
+  color: #a33a2a;
+}
+
+.adminbox__error,
+.adminbox__done {
+  margin-top: 14px;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  border-left: 3px solid;
+}
+
+.adminbox__error {
+  border-color: #a33a2a;
+  background: rgba(163, 58, 42, 0.08);
+  color: #7d2c20;
+}
+
+.adminbox__done {
+  border-color: var(--key-deep);
+  background: var(--key-wash);
+  color: var(--key-ink);
+}
+
+.adminbox__note {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  font-size: 11.5px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.adminbox__note code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--ivory-deep);
+  padding: 1px 5px;
+}
+
+/* ---------- 입력칸 ---------- */
+
+.field {
+  display: block;
+  margin-top: 18px;
+}
+
+.field__label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+
+.field__label i {
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.field__input {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 11px 13px;
+  transition: border-color 0.2s ease;
+}
+
+.field__input:focus {
+  border-color: var(--key-deep);
+  outline: none;
+}
+
+/* ---------- 갈래 고르기 (사진 / 영상 / 논문) ---------- */
+
+.adminform__kinds {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.kindtab {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.kindtab span {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.kindtab:hover {
+  border-color: var(--ink);
+}
+
+.kindtab.is-active {
+  background: var(--key-wash);
+  border-color: var(--key-deep);
+  color: var(--key-ink);
+}
+
+/* ---------- 파일 놓는 자리 ---------- */
+
+.dropzone {
+  position: relative;
+  margin-top: 14px;
+  border: 1.5px dashed var(--line);
+  border-radius: 3px;
+  background: var(--ivory);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dropzone.is-over {
+  border-color: var(--key-deep);
+  background: var(--key-wash);
+}
+
+/* 파일 입력칸은 감춰 두고, 아래 라벨을 눌러 여는 방식입니다 */
+.dropzone__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropzone__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 28px 18px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropzone__label b {
+  font-size: 13.5px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.dropzone__label span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.dropzone__input:focus-visible + .dropzone__label {
+  outline: 2px solid var(--key-deep);
+  outline-offset: 3px;
+}
+
+/* ---------- 올려 둔 파일 목록 ---------- */
+
+.adminlist {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ink);
+}
+
+.adminlist__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.adminlist__title span {
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--ivory-deep);
+  color: var(--ink-soft);
+}
+
+.adminlist__empty {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.adminlist__rows {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+}
+
+.adminrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.adminrow__thumb {
+  flex: none;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--ivory-deep);
+  border: 1px solid var(--line);
+}
+
+.adminrow__thumb img,
+.adminrow__thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adminrow__pdf {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.adminrow__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.adminrow__meta b {
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.adminrow__meta span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.adminrow__meta em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.adminrow__actions {
+  flex: none;
+  display: flex;
+  gap: 6px;
+}
+
+/* ---------- 올린 파일이 화면에 나올 때 ---------- */
+
+.badge-upload {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  background: var(--ink);
+  color: var(--ivory);
+  white-space: nowrap;
+}
+
+.uploaded {
+  margin-bottom: clamp(24px, 4vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 32px);
+  border-bottom: 1px solid var(--line);
+}
+
+.uploaded__label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.videogrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--gap);
+}
+
+.videocard video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+/* 논문 파일 목록 */
+.filelist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filecard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.filecard__type {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  padding: 6px 9px;
+  background: var(--ivory-deep);
+  color: var(--ink-soft);
+}
+
+.filecard__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.filecard__meta b {
+  font-size: 13.5px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.filecard__meta span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.filecard__meta em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 좁은 화면 ---------- */
+
+@media (max-width: 560px) {
+  .adminform__kinds {
+    grid-template-columns: 1fr;
+  }
+
+  .adminrow,
+  .filecard {
+    flex-wrap: wrap;
+  }
+
+  .adminrow__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* ============================================================
+   작품 불러오기 상태 안내 (불러오는 중 / 없음 / 실패)
+   ============================================================ */
+
+.state {
+  padding: clamp(28px, 5vw, 56px) clamp(20px, 4vw, 44px);
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.state--error {
+  border-color: rgba(163, 58, 42, 0.5);
+  background: rgba(163, 58, 42, 0.05);
+}
+
+.state__mark {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.state--error .state__mark {
+  color: #a33a2a;
+}
+
+.state__title {
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 10px;
+}
+
+.state__text {
+  margin-top: 12px;
+  max-width: 58ch;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+.state__hint {
+  margin-top: 12px;
+  max-width: 58ch;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.state code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--ivory-deep);
+  padding: 1px 5px;
+}
+
+.state .btn-ghost {
+  display: inline-block;
+  margin-top: 18px;
+}
+
+/* 불러오는 동안 카드가 들어올 자리 */
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--gap);
+  margin-top: clamp(20px, 3vw, 32px);
+}
+
+.skeleton span {
+  display: block;
+  height: clamp(110px, 14vw, 170px);
+  background: linear-gradient(
+    100deg,
+    var(--ivory-deep) 30%,
+    rgba(217, 146, 61, 0.18) 50%,
+    var(--ivory-deep) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 160% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+
+/* 상세 보기 안의 영상 */
+.detail__video {
+  width: 100%;
+  margin-top: 12px;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+/* ---------- 관리자 폼 추가분 ---------- */
+
+.field__input--area {
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.7;
+}
+
+/* 이미 올라가 있는 파일 주소 줄 */
+.mediaurl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: var(--ivory-deep);
+  font-size: 12px;
+}
+
+.mediaurl a {
+  color: var(--key-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+
+/* 수정 중 알림줄 안의 단추 */
+.adminbox__done .btn-ghost {
+  margin-left: 12px;
+  vertical-align: middle;
+}
+
+/* ---------- "또는 주소 붙여넣기" 줄 ---------- */
+
+.linkrow {
+  margin-top: 8px;
+}
+
+.linkrow__or {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.linkrow__hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* 상세 보기의 유튜브 창 */
+iframe.detail__video {
+  display: block;
+  border: 1px solid var(--ink);
+}
+
+/* ════════════════════════════════════════════════════════════
+   A안 — 갤러리 화이트
+   미술관 도록의 감각. 흰 바탕, 머리카락처럼 얇은 선, 넓은 여백.
+
+   앞의 규칙들을 지우지 않고 이 아래에서 덮어씁니다.
+   (같은 규칙이 두 번 나오면 나중 것이 이깁니다)
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  /* 색 — 아이보리·주황을 걷어내고 흰색과 먹색만 남깁니다 */
+  --ivory: #ffffff;
+  --ivory-deep: #f4f3f1;
+  --paper: #ffffff;
+  --ink: #111110;
+  --ink-soft: #55524d;
+  --muted: #8f8b84;
+
+  /* 강조색은 따로 두지 않습니다. 강조가 필요하면 먹색의 농도로 냅니다 */
+  --key: #111110;
+  --key-deep: #111110;
+  --key-ink: #6b6862;
+  --key-wash: #f4f3f1;
+
+  --line: rgba(17, 17, 16, 0.11);
+  --line-soft: rgba(17, 17, 16, 0.05);
+
+  /* 여백을 넓혀 그림이 숨 쉴 자리를 만듭니다 */
+  --pad: clamp(22px, 6vw, 96px);
+  --gap: clamp(20px, 3vw, 44px);
+}
+
+body {
+  background: var(--paper);
+  letter-spacing: 0.005em;
+}
+
+/* ---------- 내비게이션 — 거의 보이지 않게 ---------- */
+
+.nav {
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.nav__brand {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.nav__link {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  color: var(--muted);
+}
+
+.nav__link::after {
+  height: 1px;
+  background: var(--ink);
+}
+
+.nav__link.is-active,
+.nav__link:hover {
+  color: var(--ink);
+}
+
+/* ---------- 첫 화면 ---------- */
+
+.hero {
+  padding-block: clamp(56px, 12vw, 150px) clamp(32px, 6vw, 72px);
+}
+
+.hero__top {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+
+.badge {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 0.26em;
+}
+
+.badge i {
+  width: 5px;
+  height: 5px;
+  background: var(--ink);
+}
+
+/* 큰 제목은 굵기를 낮춥니다. 도록의 표제는 힘으로 누르지 않습니다 */
+.hero__name {
+  font-weight: 400;
+  font-size: clamp(2.9rem, 10.5vw, 8.5rem);
+  letter-spacing: -0.005em;
+}
+
+.kicker {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+}
+
+/* 흐르는 띠 — 색 면을 없애고 선 두 줄만 남깁니다 */
+.ticker {
+  background: none;
+  border-block: 1px solid var(--line);
+  padding-block: 14px;
+}
+
+/* ---------- 섹션 머리 ---------- */
+
+.section {
+  padding-block: clamp(48px, 9vw, 110px);
+}
+
+.section__head {
+  align-items: flex-end;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
+  margin-bottom: clamp(36px, 6vw, 80px);
+}
+
+.section__title {
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4.2vw, 3.1rem);
+  letter-spacing: -0.01em;
+  margin-top: 12px;
+}
+
+.section__note {
+  max-width: 40ch;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* ---------- 작품 — 엇갈려 거는 배치 ---------- */
+
+.feature {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: clamp(28px, 6vw, 96px);
+  row-gap: clamp(48px, 8vw, 130px);
+}
+
+/* 첫 작품은 한 줄을 혼자 쓰되, 오른쪽에 빈 자리를 남깁니다 */
+.feature > :first-child {
+  grid-row: auto;
+  grid-column: 1 / -1;
+  width: min(100%, 74%);
+}
+
+/* 두 번째부터는 하나 걸러 아래로 내려 걸어, 줄이 맞지 않게 합니다 */
+.feature > :nth-child(even) {
+  margin-top: clamp(24px, 7vw, 104px);
+}
+
+.card__figure {
+  background: var(--ivory-deep);
+  border: none;
+}
+
+.card--lg .card__figure {
+  aspect-ratio: 3 / 2;
+}
+
+.card--sm .card__figure {
+  aspect-ratio: 4 / 5;
+}
+
+/* 회색으로 눌러 두었다가 살아나는 연출 대신, 그림을 그대로 보여 줍니다 */
+.card__img {
+  filter: none;
+}
+
+.card:hover .card__img,
+.card:focus-visible .card__img {
+  filter: none;
+  transform: scale(1.03);
+}
+
+.card__body {
+  padding-top: 18px;
+}
+
+/* 번호 · 날짜 · 갈래를 한 줄에 작게 */
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card__meta b {
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.card__title {
+  font-weight: 400;
+  margin-top: 10px;
+}
+
+.card--lg .card__title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.card--sm .card__title {
+  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
+}
+
+.card__sub {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 44ch;
+}
+
+/* 눌러 볼 수 있다는 표시 — 밑줄 한 줄이면 충분합니다 */
+.card__more {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
+  transition: border-color 0.3s ease;
+}
+
+.card:hover .card__more {
+  border-color: var(--ink);
+}
+
+/* ---------- 논문 카드 ---------- */
+
+.paper {
+  background: none;
+  border: 1px solid var(--line);
+  transition: border-color 0.3s ease;
+}
+
+.paper:hover {
+  border-color: var(--ink);
+}
+
+.paper__title {
+  font-weight: 400;
+}
+
+.chip {
+  border-color: var(--line);
+  border-radius: 0;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.chip--key {
+  background: none;
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+/* ---------- 세 번째 화면 ---------- */
+
+.snap--about {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+}
+
+/* ---------- 단추 ---------- */
+
+.btn {
+  background: var(--ink);
+  color: #ffffff;
+  border: 1px solid var(--ink);
+  box-shadow: none;
+  font-size: 10px;
+  letter-spacing: 0.26em;
+}
+
+.btn:hover {
+  transform: none;
+  box-shadow: none;
+  background: #35322d;
+  border-color: #35322d;
+}
+
+.btn--sm:disabled {
+  box-shadow: none;
+}
+
+/* ---------- 상세 보기 — 어둡게 덮지 않고 희게 덮습니다 ---------- */
+
+.overlay {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.detail {
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.detail__title {
+  font-weight: 400;
+}
+
+.detail__close {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+/* ---------- 상태 안내 · 관리자 창 ---------- */
+
+.state {
+  border-color: var(--line);
+}
+
+.adminbox {
+  box-shadow: 0 24px 60px rgba(17, 17, 16, 0.12);
+  border-color: var(--line);
+}
+
+.badge-sample {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+/* ---------- 좁은 화면 ---------- */
+
+@media (max-width: 860px) {
+  .feature {
+    grid-template-columns: 1fr;
+    row-gap: clamp(40px, 9vw, 64px);
+  }
+
+  .feature > :first-child {
+    width: 100%;
+  }
+
+  .feature > :nth-child(even) {
+    margin-top: 0;
+  }
+}
+
+/* ---------- A안 보강 — 상단 글자와 첫 화면 ---------- */
+
+/* 기호를 뺀 자리 — 글자만으로 표지를 만듭니다.
+   세리프를 크게 쓰는 대신 산세리프를 작게, 자간을 넓혀 씁니다 */
+.nav__brand {
+  display: block;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.nav__inner {
+  height: 62px;
+}
+
+/* 첫 화면 — 도록의 속표지 */
+
+.hero__label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: clamp(40px, 8vw, 96px) 0 clamp(16px, 2vw, 26px);
+}
+
+/* flex 로 로고와 글자를 나란히 두던 규칙을 되돌립니다 */
+.hero__name {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 7.2vw, 6.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.hero__body {
+  margin-top: clamp(40px, 8vw, 104px);
+}
+
+.hero__meta a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+
+.hero__meta a:hover {
+  border-color: var(--ink);
+}
+
+/* 상단 이름을 키웁니다 — 표지 제목만 한 존재감으로 */
+.nav__brand {
+  font-size: clamp(15px, 1.5vw, 19px);
+  letter-spacing: 0.2em;
+}
+
+.nav__inner {
+  height: 72px;
+}
+
+:root {
+  --nav-h: 72px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   회색 시안 4 — 짙은 머리띠
+
+   상단 띠만 먹회색으로 눌러 화면 위쪽에 무게중심을 만듭니다.
+   본문은 그대로 흰색입니다. 색은 쓰지 않고 농도만 씁니다.
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --bar: #272623;
+  --bar-ink: #ffffff;
+  --bar-muted: #a09a92;
+  --bar-line: rgba(255, 255, 255, 0.16);
+}
+
+.nav {
+  background: var(--bar);
+  border-bottom: none;
+  /* 반투명이 아니라 꽉 찬 면이라 뒤를 흐릴 필요가 없습니다 */
+  backdrop-filter: none;
+}
+
+.nav__brand {
+  color: var(--bar-ink);
+}
+
+.nav__link {
+  color: var(--bar-muted);
+}
+
+.nav__link:hover,
+.nav__link.is-active {
+  color: var(--bar-ink);
+}
+
+.nav__link::after {
+  background: var(--bar-ink);
+}
+
+/* 관리자 단추 — 어두운 띠 위에서는 테두리도 밝아야 보입니다 */
+.nav__link--admin {
+  border-color: var(--bar-line);
+  color: var(--bar-muted);
+}
+
+.nav__link--admin:hover {
+  border-color: var(--bar-ink);
+  color: var(--bar-ink);
+}
+
+.nav__link--admin.is-on {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: var(--bar-ink);
+}
+
+.nav__count {
+  background: var(--bar-ink);
+  color: var(--bar);
+}
+
+/* 초점 테두리는 먹색이라 어두운 띠 위에서 보이지 않습니다 */
+.nav :focus-visible {
+  outline-color: var(--bar-ink);
+}
+
+/* 띠가 짙어진 만큼 첫 화면은 조금 더 띄웁니다 */
+.hero {
+  padding-block: clamp(48px, 10vw, 128px) clamp(32px, 6vw, 72px);
+}
+
+/* ---------- 논문 등록 폼 ---------- */
+
+/* DOI 칸 + 가져오기 단추를 한 줄에 */
+.doirow {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.doirow .field__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.doirow .btn-ghost {
+  flex: none;
+}
+
+/* 학술지 · 연도 · 인용수를 한 줄에 */
+.field3 {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+}
+
+.field3 .field {
+  margin-top: 18px;
+}
+
+/* 등록한 논문 아래에 붙는 선행연구 구역 */
+.priorwork {
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: clamp(24px, 4vw, 40px);
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 560px) {
+  .doirow {
+    flex-direction: column;
+  }
+
+  .field3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- 배치 1 — 대표 작품을 넓게 ---------- */
+
+/* 맨 앞 작품은 화면 폭을 다 씁니다 (영상 비율 16:9) */
+.feature > :first-child {
+  width: 100%;
+}
+
+.card--lg .card__figure {
+  aspect-ratio: 16 / 9;
+}
+
+/* 전체 보기 단추 */
+.showall {
+  display: block;
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  padding: 10px 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.showall:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* ---------- 관리자 — 대표 작품 체크 ---------- */
+
+.checkrow {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  margin-top: 18px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.checkrow input {
+  margin-top: 3px;
+  width: 15px;
+  height: 15px;
+  flex: none;
+  accent-color: var(--ink);
+}
+
+.checkrow b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.checkrow i {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.pinmark {
+  display: inline-block;
+  margin-right: 7px;
+  padding: 2px 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  background: var(--ink);
+  color: #fff;
+  vertical-align: 1px;
+}
+
+/* ---------- 배경에 아주 옅은 회색 ---------- */
+
+/*
+  두 단계로 나눕니다.
+    · 페이지 전체 : #faf9f7  — 순백의 차가움만 덜어 내는 정도
+    · Works 구역  : #f4f3f1  — 한 단계 더 눌러 구역 경계를 만듭니다
+  사진이 흰 종이에 얹힌 것처럼 살짝 떠 보입니다.
+*/
+
+:root {
+  --paper: #faf9f7;
+  --ivory: #faf9f7;
+  --ivory-deep: #eceae4;
+}
+
+body {
+  background: #faf9f7;
+}
+
+.snap--work {
+  background: #f4f3f1;
+}
+
+/* Papers 화면도 같은 구역이라 같은 바닥을 씁니다 */
+.snap--solo {
+  background: #f4f3f1;
+}
+
+/* About 은 다시 밝게 — 마지막 장이 환하게 열립니다 */
+.snap--about {
+  background: #faf9f7;
+}
+
+/* 회색 바닥 위에서는 카드·창이 흰색이라야 떠 보입니다 */
+.paper,
+.state,
+.adminbox,
+.detail,
+.filecard {
+  background: #ffffff;
+}
+
+/* 흐르는 띠는 첫 화면 바닥과 같게 */
+.ticker {
+  background: #faf9f7;
+}
+
+/* ---------- 사진을 자르지 않고 전부 보여 줍니다 ---------- */
+
+/*
+  전에는 틀에 16:9 · 4:5 같은 고정 비율을 주고 object-fit: cover 로 채웠습니다.
+  그러면 틀보다 세로로 긴 사진은 위아래가 잘려 나갑니다.
+
+  이제 틀의 높이를 사진 비율에 맡깁니다. 사진마다 높이가 달라지지만,
+  도록에서 크기가 제각각인 인화지를 걸어 둔 것처럼 보입니다.
+*/
+
+.card__figure,
+.card--lg .card__figure,
+.card--sm .card__figure {
+  aspect-ratio: auto;
+  height: auto;
+}
+
+.card__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* 사진이 없을 때 쓰는 자리 표시는 높이를 가져야 합니다 */
+.card__figure .ph {
+  min-height: 220px;
+}
+
+/* 상세 보기도 같은 규칙 — 잘라 내지 않습니다 */
+.detail__media {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(14px, 2vw, 28px);
+}
+
+.detail__media img {
+  width: 100%;
+  height: auto;
+  max-height: 72vh;
+  object-fit: contain;
+}
+
+/* ════════════════════════════════════════════════════════════
+   한 화면에 가두던 규칙 풀기
+
+   예전 구성은 Works 를 딱 한 화면 높이에 맞추고 넘치는 부분을
+   잘라냈습니다(height:100% + overflow:hidden). 카드 높이가 강제로
+   정해지니 사진이 위쪽만 남고 잘렸습니다.
+
+   도록은 작품 수만큼 길어지는 것이 자연스러우므로,
+   구역이 내용에 따라 늘어나고 페이지가 그냥 스크롤되게 바꿉니다.
+   ════════════════════════════════════════════════════════════ */
+
+@media (min-width: 861px) {
+  .snap--work {
+    height: auto;
+    min-height: calc(100dvh - var(--nav-h));
+    display: block;
+    overflow: visible;
+    padding-bottom: clamp(48px, 8vw, 110px);
+  }
+
+  .snap--work > .panel {
+    display: block;
+    flex: none;
+    min-height: 0;
+  }
+
+  .snap--work .panel__body {
+    flex: none;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  /* 작품 격자 — 높이를 내용에 맡깁니다 */
+  .panel__body > .feature {
+    height: auto;
+    grid-template-rows: none;
+  }
+
+  .feature .card {
+    display: block;
+    min-height: 0;
+  }
+
+  .feature .card__figure {
+    flex: none;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .feature .card__body {
+    padding-top: 18px;
+  }
+
+  /* 논문 격자도 같은 이유로 풀어 줍니다 */
+  .panel__body .masonry {
+    height: auto;
+    grid-template-rows: none;
+  }
+
+  .panel__body .masonry--2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .panel__body .masonry__item {
+    display: block;
+    min-height: 0;
+  }
+}
+
+/*
+  구역이 화면보다 길어졌으므로, 스크롤이 억지로 달라붙지 않게 합니다.
+  mandatory 는 "무조건 한 화면씩", proximity 는 "가까우면 맞춰 주기" 입니다.
+  장(章) 구분은 그대로 남고 긴 구역만 편하게 읽힙니다.
+*/
+html {
+  scroll-snap-type: y proximity;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Works — 한 화면에 세 점 (대표작 1 + 사진 2)
+
+   앞에서는 잘라내서 맞췄지만, 여기서는 '줄여서' 맞춥니다.
+   사진의 높이 상한만 화면 높이(vh) 기준으로 정하고 가로는 비율에 맡기므로,
+   어떤 비율의 사진이든 전부 보이면서 한 화면에 들어갑니다.
+
+   화면이 낮은 기기(700px 미만)에서는 억지로 맞추지 않고 그냥 스크롤합니다.
+   ════════════════════════════════════════════════════════════ */
+
+@media (min-width: 861px) and (min-height: 700px) {
+  .snap--work {
+    height: calc(100dvh - var(--nav-h));
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: clamp(10px, 2vh, 22px);
+  }
+
+  .snap--work > .panel {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    padding-block: clamp(10px, 2vh, 24px);
+  }
+
+  .snap--work .panel__body {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .panel .section__head {
+    flex: none;
+    padding-bottom: 12px;
+    margin-bottom: clamp(12px, 2vh, 26px);
+  }
+
+  /* 한 화면에 맞추려면 엇갈린 배치를 접고 줄을 맞춥니다 */
+  .panel__body > .feature {
+    height: 100%;
+    grid-template-rows: none;
+    align-content: start;
+    row-gap: clamp(10px, 1.8vh, 22px);
+    column-gap: clamp(20px, 3vw, 60px);
+  }
+
+  .feature > :first-child {
+    width: 100%;
+  }
+
+  .feature > :nth-child(even) {
+    margin-top: 0;
+  }
+
+  /* 사진을 가운데 두고, 높이 상한만 정합니다 (가로는 비율대로) */
+  .feature .card__figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+  }
+
+  .feature .card__img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .feature .card--lg .card__img {
+    max-height: 38vh;
+  }
+
+  .feature .card--sm .card__img {
+    max-height: 20vh;
+  }
+
+  /* 글자도 한 화면에 맞게 조입니다 */
+  .feature .card__body {
+    padding-top: 10px;
+  }
+
+  .feature .card--lg .card__title {
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+  }
+
+  .feature .card--sm .card__title {
+    font-size: clamp(0.95rem, 1.2vw, 1.15rem);
+  }
+
+  /* 설명은 두 줄까지만 (넘치면 말줄임) */
+  .feature .card__sub {
+    font-size: 12.5px;
+    margin-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .feature .card__more {
+    display: none;
+  }
+
+  .showall {
+    margin-top: clamp(10px, 1.6vh, 20px);
+    padding: 7px 16px;
+  }
+
+  /* '전체 보기'를 켜면 제한을 풀고 페이지가 길어지게 둡니다 */
+  .snap--work:has(.panel--expanded) {
+    height: auto;
+    min-height: calc(100dvh - var(--nav-h));
+    display: block;
+    overflow: visible;
+    padding-bottom: clamp(48px, 8vw, 110px);
+  }
+
+  .snap--work:has(.panel--expanded) > .panel,
+  .snap--work .panel--expanded .panel__body {
+    display: block;
+    flex: none;
+    overflow: visible;
+  }
+
+  .panel--expanded .panel__body > .feature {
+    height: auto;
+    row-gap: clamp(40px, 6vw, 90px);
+  }
+
+  .panel--expanded .feature .card--lg .card__img,
+  .panel--expanded .feature .card--sm .card__img {
+    max-height: none;
+  }
+
+  .panel--expanded .feature .card__more {
+    display: inline-block;
+  }
+}
+
+/* 대표작이 넓은 빈 자리에 동동 떠 보이지 않도록,
+   칸을 사진 크기에 맞추고 왼쪽으로 붙입니다 (설명도 사진 왼쪽 끝에 맞습니다) */
+@media (min-width: 861px) and (min-height: 700px) {
+  .snap--work:not(:has(.panel--expanded)) .feature > :first-child {
+    width: auto;
+    justify-self: start;
+  }
+
+  .feature .card--lg .card__figure {
+    justify-content: flex-start;
+  }
+
+  .feature .card--lg .card__img {
+    max-height: 42vh;
+    margin: 0;
+  }
+}
+
+/* 작은 사진도 왼쪽에 붙여, 설명 글이 사진 왼쪽 끝과 한 줄로 맞게 합니다 */
+@media (min-width: 861px) and (min-height: 700px) {
+  .feature .card--sm .card__figure {
+    justify-content: flex-start;
+  }
+
+  .feature .card--sm .card__img {
+    margin: 0;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   Works — 왼쪽 대표작 · 오른쪽 2×2
+
+   왼쪽 한 점의 높이에 오른쪽 넉 점(2줄)의 높이를 맞춥니다.
+   격자가 두 칸의 높이를 자동으로 같게 만들어 주므로(stretch),
+   오른쪽 사진은 남는 높이를 나눠 갖고 object-fit: contain 으로
+   비율을 지킵니다 — 어떤 비율이어도 잘리지 않습니다.
+   ════════════════════════════════════════════════════════════ */
+
+.feature__side {
+  display: grid;
+  gap: clamp(14px, 2vh, 24px) clamp(14px, 1.6vw, 26px);
+}
+
+@media (min-width: 861px) and (min-height: 700px) {
+  .panel__body > .feature {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: stretch;
+    column-gap: clamp(20px, 2.6vw, 52px);
+  }
+
+  /* 앞에서 대표작을 사진 폭에 맞춰 줄이던 규칙을 되돌립니다 */
+  .snap--work:not(:has(.panel--expanded)) .feature > :first-child {
+    width: 100%;
+    justify-self: stretch;
+  }
+
+  .feature > :nth-child(even) {
+    margin-top: 0;
+  }
+
+  /* 왼쪽 — 대표작 */
+  .feature > .card--lg {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .feature .card--lg .card__figure {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .feature .card--lg .card__img {
+    width: 100%;
+    height: 100%;
+    max-height: 46vh;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  /* 오른쪽 — 2열 2줄 */
+  .feature__side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    min-height: 0;
+  }
+
+  .feature__side .card {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .feature__side .card__figure {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  .feature__side .card__img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .feature__side .card__body {
+    flex: none;
+    padding-top: 8px;
+  }
+
+  .feature__side .card__title {
+    font-size: clamp(0.88rem, 1.05vw, 1.05rem);
+  }
+
+  /* 오른쪽 칸은 좁으므로 설명은 한 줄만 */
+  .feature__side .card__sub {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    font-size: 11.5px;
+    margin-top: 3px;
+  }
+}
+
+/* 좁은 화면 — 위아래로 쌓고, 오른쪽 묶음은 2열 유지 */
+@media (max-width: 860px) {
+  .feature__side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: clamp(28px, 6vw, 48px);
+  }
+}
+
+/* ---------- 좌우 배치 바로잡기 ----------
+
+   두 가지가 어긋나 있었습니다.
+   ① 대표작에 grid-column: 1 / -1 (두 칸 다 쓰기)이 남아 있어 왼쪽 칸에 들어가지 않았습니다.
+   ② 왼쪽·오른쪽 모두 "남는 높이를 채우라"고 해서 기준 높이가 없어 0으로 무너졌습니다.
+
+   왼쪽 사진이 높이를 정하고(max-height), 오른쪽이 그 높이에 맞추게 고칩니다.
+*/
+
+@media (min-width: 861px) and (min-height: 700px) {
+  .panel__body > .feature > .card--lg {
+    grid-column: auto;
+    grid-row: auto;
+    display: block;
+    width: 100%;
+  }
+
+  /* 왼쪽 사진이 기준 높이를 만듭니다 */
+  .feature .card--lg .card__figure {
+    flex: none;
+    height: auto;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .feature .card--lg .card__img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 46vh;
+    object-fit: contain;
+    margin: 0;
+  }
+
+  /* 오른쪽 묶음은 그 높이에 맞춰 늘어납니다 */
+  .panel__body > .feature > .feature__side {
+    grid-column: auto;
+    grid-row: auto;
+    height: 100%;
+    margin-top: 0;
+  }
+}
+
+/* '전체 보기'에서는 높이를 맞추지 않고 사진 원래 크기대로 늘어놓습니다 */
+@media (min-width: 861px) and (min-height: 700px) {
+  .panel--expanded .feature__side {
+    height: auto;
+    grid-auto-rows: auto;
+    row-gap: clamp(28px, 4vw, 56px);
+  }
+
+  .panel--expanded .feature__side .card,
+  .panel--expanded .feature > .card--lg {
+    display: block;
+  }
+
+  .panel--expanded .feature__side .card__figure {
+    flex: none;
+    height: auto;
+  }
+
+  .panel--expanded .feature__side .card__img {
+    height: auto;
+    object-fit: contain;
+  }
+
+  .panel--expanded .feature__side .card__sub {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   About 3 — 명세표
+
+   왼쪽에 글, 오른쪽에 작품 캡션 같은 정보표를 세웁니다.
+   사진이 빠진 자리를 정보가 채워 좌우 균형을 잡습니다.
+   ════════════════════════════════════════════════════════════ */
+
+.about__body {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+}
+
+/* 정보표는 위에서부터 채웁니다 (가운데 정렬이 아니라) */
+.about__media {
+  justify-content: flex-start;
+}
+
+.profile__facts {
+  margin-top: clamp(6px, 1.2vh, 14px);
+  gap: 0;
+  /* 표의 첫 줄만 굵은 선으로 시작 — 작품 캡션의 관례입니다 */
+  border-top: 1px solid var(--ink);
+}
+
+.profile__facts > div {
+  display: block;
+  padding: clamp(9px, 1.4vh, 14px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.profile__facts dt {
+  padding-top: 0;
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+}
+
+.profile__facts dd {
+  margin-top: 5px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* 왼쪽 글 — 인용은 기울이지 않고 곧게 세웁니다 */
+.profile__lead {
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.4vw, 1.95rem);
+  line-height: 1.42;
+}
+
+.profile__text p {
+  max-width: 52ch;
+}
+
+/* 연락 줄 */
+.about__contact {
+  border-top: 1px solid var(--line);
+}
+
+.about__social {
+  gap: clamp(14px, 2vw, 28px);
+}
+
+@media (max-width: 860px) {
+  .about__body {
+    grid-template-columns: 1fr;
+  }
+
+  .about__media {
+    margin-top: clamp(24px, 5vw, 40px);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   About 4 절충안 — 가운데 한 문장 + 아래 명세 한 줄
+
+   글씨체는 다른 화면과 같은 규칙을 씁니다.
+     제목·인용 : 세리프 (Times / Tinos), 굵기 400
+     라벨      : 모노, 대문자, 자간 넓게
+     값·본문   : 산세리프
+   ════════════════════════════════════════════════════════════ */
+
+.about--center {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.about__center {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-block: clamp(20px, 4vh, 56px);
+}
+
+.about__center .kicker {
+  margin-bottom: clamp(16px, 2.6vh, 30px);
+}
+
+/* 가운데 한 문장 — 이 화면의 주인공 */
+.about__quote {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: normal;
+  font-size: clamp(1.5rem, 3.4vw, 2.9rem);
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+.about__line {
+  margin: clamp(16px, 2.4vh, 28px) 0 0;
+  max-width: 54ch;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.about__center .btn {
+  margin-top: clamp(20px, 3vh, 36px);
+}
+
+.about__center .about__social {
+  display: flex;
+  justify-content: center;
+  gap: clamp(18px, 3vw, 36px);
+  margin-top: clamp(14px, 2.2vh, 26px);
+}
+
+/* 아래 명세 한 줄 — 네 칸이 가로로 늘어섭니다 */
+.about__specs {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 32px);
+  margin: 0;
+  padding-top: clamp(12px, 1.8vh, 20px);
+  border-top: 1px solid var(--ink);
+}
+
+.about__specs > div {
+  margin: 0;
+}
+
+.about__specs dt {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about__specs dd {
+  margin: 5px 0 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* 좁은 화면 — 명세는 두 칸씩 */
+@media (max-width: 720px) {
+  .about__specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: clamp(14px, 3vw, 22px);
+  }
+
+  .about__quote {
+    max-width: 100%;
   }
 }

@@ -21,7 +21,6 @@ export default function SmartImage({ src, alt, className = '' }) {
       className={className}
       src={src}
       alt={alt}
-      loading="lazy"
       decoding="async"
       onError={() => setFailed(true)}
     />
