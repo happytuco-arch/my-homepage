@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>동네 브루펍 — 30초 트레일러</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --amber: #e0a72a;
+        --amber-l: #ffd05c;
+        --amber-d: #a8741a;
+        --cream: #f6f2e4;
+        --ink: #14100c;
+        --red: #c94f43;
+        --green: #5f9c66;
+        --sky: #7fd3f0;
+        --pixel: 'Press Start 2P', monospace;
+        --kr: 'Noto Sans KR', sans-serif;
+        --mono: 'IBM Plex Mono', monospace;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #0d0b12;
+        color: var(--cream);
+        font-family: var(--kr);
+      }
+
+      /* ── 화면 전체를 채웁니다 (검은 여백 없음) ── */
+      .frame {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: #0d0b12;
+        /* 프레임 폭을 기준으로 글자 크기를 잡습니다 */
+        container-type: inline-size;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        animation-duration: 30s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+
+      .scene img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        image-rendering: pixelated;
+      }
+
+      /* ── 공통 오버레이 ── */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 52%, rgba(6, 5, 10, 0.72) 100%);
+        z-index: 40;
+      }
+
+      .scan {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 41;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.035) 0 1px,
+          transparent 1px 3px
+        );
+      }
+
+      .flash {
+        position: absolute;
+        inset: 0;
+        background: #fff;
+        opacity: 0;
+        z-index: 39;
+        pointer-events: none;
+        animation: cuts 30s linear infinite;
+      }
+
+      /* ── 자막 — 상자 없이, 화면 아래 가운데에 크게 ── */
+      .cap {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 11%;
+        z-index: 30;
+        text-align: center;
+        font-weight: 900;
+        font-size: 4.3cqw;
+        line-height: 1.2;
+        letter-spacing: -0.015em;
+        color: #ffffff;
+        /* 어떤 배경 위에서도 읽히도록 두꺼운 외곽선 + 그림자 */
+        -webkit-text-stroke: 0.5cqw var(--ink);
+        paint-order: stroke fill;
+        text-shadow:
+          0 0.5cqw 0 rgba(0, 0, 0, 0.55),
+          0 0 3.5cqw rgba(0, 0, 0, 0.85);
+        opacity: 0;
+        animation-duration: 30s;
+        animation-timing-function: cubic-bezier(0.18, 0.9, 0.2, 1);
+        animation-iteration-count: infinite;
+      }
+
+      /* 위쪽 작은 영문 라벨 */
+      .cap small {
+        display: block;
+        font-family: var(--pixel);
+        font-weight: 400;
+        font-size: 1.45cqw;
+        letter-spacing: 0.36em;
+        color: var(--amber-l);
+        margin-bottom: 1.5cqw;
+        -webkit-text-stroke: 0.3cqw var(--ink);
+        paint-order: stroke fill;
+        text-shadow: 0 0 2.4cqw rgba(224, 167, 42, 0.9);
+      }
+
+      /* 문장 아래 가운데에서 퍼지는 키컬러 선 */
+      .cap i {
+        display: block;
+        width: 16cqw;
+        height: 0.65cqw;
+        margin: 1.4cqw auto 0;
+        background: var(--amber);
+        box-shadow: 0 0 2cqw rgba(224, 167, 42, 0.9);
+      }
+
+      /* ── 로고 ── */
+      .logo {
+        position: absolute;
+        inset: 0;
+        z-index: 32;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.6cqw;
+        text-align: center;
+      }
+
+      .logo__mug {
+        width: 13cqw;
+        height: 13cqw;
+        image-rendering: pixelated;
+      }
+
+      .logo__ko {
+        font-family: var(--kr);
+        font-weight: 900;
+        font-size: 7.6cqw;
+        letter-spacing: 0.06em;
+        margin: 0;
+        color: var(--cream);
+        text-shadow:
+          0 0.6cqw 0 var(--amber-d),
+          0 1.2cqw 2.4cqw rgba(0, 0, 0, 0.7);
+      }
+
+      .logo__en {
+        font-family: var(--pixel);
+        font-size: 1.9cqw;
+        letter-spacing: 0.3em;
+        color: var(--amber-l);
+        margin: 0;
+      }
+
+      .logo__tag {
+        font-family: var(--mono);
+        font-size: 1.7cqw;
+        letter-spacing: 0.3em;
+        color: rgba(246, 242, 228, 0.72);
+        margin: 0.4cqw 0 0;
+      }
+
+      /* ── HUD 조각 ── */
+      .hud {
+        position: absolute;
+        z-index: 31;
+        font-family: var(--mono);
+        opacity: 0;
+        animation-duration: 30s;
+        animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+        animation-iteration-count: infinite;
+      }
+
+      /* 미니게임 배지 — 모서리를 비스듬히 자른 게임 UI 느낌 */
+      .tag {
+        top: 6%;
+        left: 4%;
+        padding: 1.3cqw 3cqw 1.3cqw 2.2cqw;
+        background: linear-gradient(100deg, var(--amber-l), var(--amber));
+        color: #1c1409;
+        font-family: var(--pixel);
+        font-size: 1.35cqw;
+        letter-spacing: 0.2em;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 1.6cqw) 100%, 0 100%);
+        box-shadow: 0 0.5cqw 0 rgba(0, 0, 0, 0.45);
+      }
+
+      .tag::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0.5cqw;
+        background: #1c1409;
+      }
+
+      .daynight {
+        top: 6%;
+        right: 4%;
+        display: flex;
+        align-items: center;
+        gap: 1.2cqw;
+        padding: 1.1cqw 2cqw;
+        background: rgba(12, 9, 16, 0.8);
+        border: 0.25cqw solid rgba(246, 242, 228, 0.3);
+        font-size: 1.8cqw;
+      }
+
+      .daynight b { color: var(--amber-l); }
+
+      .bubble {
+        display: flex;
+        align-items: center;
+        gap: 0.9cqw;
+        padding: 1.1cqw 1.8cqw;
+        background: var(--cream);
+        color: var(--ink);
+        font-family: var(--kr);
+        font-weight: 700;
+        font-size: 1.9cqw;
+        border: 0.3cqw solid var(--ink);
+        border-radius: 0.4cqw;
+      }
+
+      .coin {
+        font-family: var(--pixel);
+        font-size: 2.2cqw;
+        color: var(--amber-l);
+        text-shadow: 0 0.4cqw 0 #6b4a10;
+      }
+
+      /* 타이밍 바 */
+      .bar {
+        left: 50%;
+        /* 아래 자막과 겹치지 않도록 위로 올립니다 */
+        bottom: 34%;
+        transform: translateX(-50%);
+        width: 52cqw;
+        height: 4.4cqw;
+        background: rgba(12, 9, 16, 0.86);
+        border: 0.3cqw solid var(--cream);
+      }
+
+      .bar__zone {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 44%;
+        width: 12%;
+        background: var(--green);
+      }
+
+      .bar__needle {
+        position: absolute;
+        top: -0.8cqw;
+        bottom: -0.8cqw;
+        width: 0.8cqw;
+        background: var(--cream);
+        box-shadow: 0 0 1.4cqw rgba(255, 255, 255, 0.8);
+        animation: needle 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+      }
+
+      .perfect {
+        left: 50%;
+        top: 42%;
+        transform: translate(-50%, -50%);
+        font-family: var(--pixel);
+        font-size: 4.4cqw;
+        color: var(--amber-l);
+        text-shadow: 0 0.6cqw 0 #7a2b22, 0 0 3cqw rgba(255, 208, 92, 0.7);
+      }
+
+      .combo {
+        right: 5%;
+        top: 26%;
+        text-align: right;
+        font-family: var(--pixel);
+        font-size: 3.4cqw;
+        color: var(--cream);
+        text-shadow: 0 0.5cqw 0 var(--red);
+      }
+
+      .combo span { color: var(--amber-l); }
+
+      .ing {
+        font-size: 3.6cqw;
+        filter: drop-shadow(0 0.4cqw 0 rgba(0, 0, 0, 0.5));
+      }
+
+      .cta {
+        position: absolute;
+        left: 50%;
+        bottom: 11%;
+        transform: translateX(-50%);
+        z-index: 33;
+        display: flex;
+        align-items: center;
+        gap: 1.4cqw;
+        padding: 2cqw 4.4cqw;
+        background: linear-gradient(180deg, var(--amber-l), var(--amber));
+        color: #1c1409;
+        border: 0.4cqw solid #1c1409;
+        box-shadow:
+          0 0.9cqw 0 #8a5c12,
+          0 1.6cqw 3cqw rgba(0, 0, 0, 0.6);
+        font-family: var(--kr);
+        font-weight: 900;
+        font-size: 3cqw;
+        letter-spacing: 0.04em;
+        opacity: 0;
+        animation: ctaIn 30s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+      }
+
+      /* 재생 삼각형 */
+      .cta::before {
+        content: '';
+        width: 0;
+        height: 0;
+        border-left: 2.2cqw solid #1c1409;
+        border-top: 1.3cqw solid transparent;
+        border-bottom: 1.3cqw solid transparent;
+      }
+
+      /* ── 장면별 노출 타이밍 (총 30초) ── */
+      .s1 { animation-name: s1; }
+      .s2 { animation-name: s2; }
+      .s3 { animation-name: s3; }
+      .s4 { animation-name: s4; }
+      .s5 { animation-name: s5; }
+      .s6 { animation-name: s6; }
+
+      @keyframes s1 {
+        0% { opacity: 1; transform: scale(1.06); }
+        13% { opacity: 1; transform: scale(1); }
+        15% { opacity: 0; transform: scale(1); }
+        100% { opacity: 0; }
+      }
+      @keyframes s2 {
+        0%, 14% { opacity: 0; transform: scale(1.02); }
+        16% { opacity: 1; }
+        33% { opacity: 1; transform: scale(1.09); }
+        35%, 100% { opacity: 0; }
+      }
+      @keyframes s3 {
+        0%, 34% { opacity: 0; transform: scale(1.1); }
+        36% { opacity: 1; }
+        50% { opacity: 1; transform: scale(1); }
+        52%, 100% { opacity: 0; }
+      }
+      @keyframes s4 {
+        0%, 51% { opacity: 0; transform: scale(1.02) translateX(2%); }
+        53% { opacity: 1; }
+        70% { opacity: 1; transform: scale(1.08) translateX(-2%); }
+        72%, 100% { opacity: 0; }
+      }
+      @keyframes s5 {
+        0%, 71% { opacity: 0; transform: scale(1.09); }
+        73% { opacity: 1; }
+        88% { opacity: 1; transform: scale(1); }
+        90%, 100% { opacity: 0; }
+      }
+      @keyframes s6 {
+        0%, 89% { opacity: 0; transform: scale(1.04); }
+        91%, 100% { opacity: 1; transform: scale(1); }
+      }
+
+      /* 낮 → 밤 전환 (2번 장면 안에서) */
+      .s2 .night { opacity: 0; animation: dayToNight 30s linear infinite; }
+      @keyframes dayToNight {
+        0%, 19% { opacity: 0; }
+        28%, 100% { opacity: 1; }
+      }
+
+      /* 컷 전환 플래시 */
+      @keyframes cuts {
+        0%, 14.6%, 15.4%, 34.6%, 35.4%, 51.6%, 52.4%, 71.6%, 72.4%, 89.6%, 90.4%, 100% { opacity: 0; }
+        15% , 35%, 52%, 72%, 90% { opacity: 0.55; }
+      }
+
+      /* 자막 등장 */
+      .cap--2 { animation-name: cap2; }
+      .cap--3 { animation-name: cap3; }
+      .cap--4 { animation-name: cap4; }
+      .cap--5 { animation-name: cap5; }
+      @keyframes cap2 {
+        0%, 17% { opacity: 0; transform: translateY(1.6cqw); }
+        20%, 32% { opacity: 1; transform: translateY(0); }
+        34%, 100% { opacity: 0; }
+      }
+      @keyframes cap3 {
+        0%, 37% { opacity: 0; transform: translateY(1.6cqw); }
+        40%, 49% { opacity: 1; transform: translateY(0); }
+        51%, 100% { opacity: 0; }
+      }
+      @keyframes cap4 {
+        0%, 54% { opacity: 0; transform: translateY(1.6cqw); }
+        57%, 69% { opacity: 1; transform: translateY(0); }
+        71%, 100% { opacity: 0; }
+      }
+      @keyframes cap5 {
+        0%, 74% { opacity: 0; transform: translateY(1.6cqw); }
+        77%, 87% { opacity: 1; transform: translateY(0); }
+        89%, 100% { opacity: 0; }
+      }
+
+      /* HUD 타이밍 */
+      .hud--dn { animation-name: hudDN; }
+      @keyframes hudDN {
+        0%, 16% { opacity: 0; transform: translateY(-1.4cqw); }
+        19%, 32% { opacity: 1; transform: translateY(0); }
+        34%, 100% { opacity: 0; }
+      }
+
+      .hud--order1 { top: 24%; left: 12%; animation-name: order1; }
+      .hud--order2 { top: 38%; left: 46%; animation-name: order2; }
+      .hud--coin1 { top: 52%; left: 24%; animation-name: coin1; }
+      .hud--coin2 { top: 30%; left: 68%; animation-name: coin2; }
+      @keyframes order1 {
+        0%, 38% { opacity: 0; transform: translateY(2cqw) scale(0.8); }
+        41%, 49% { opacity: 1; transform: translateY(0) scale(1); }
+        51%, 100% { opacity: 0; }
+      }
+      @keyframes order2 {
+        0%, 42% { opacity: 0; transform: translateY(2cqw) scale(0.8); }
+        45%, 49% { opacity: 1; transform: translateY(0) scale(1); }
+        51%, 100% { opacity: 0; }
+      }
+      @keyframes coin1 {
+        0%, 44% { opacity: 0; transform: translateY(2cqw); }
+        46% { opacity: 1; transform: translateY(0); }
+        50% { opacity: 0; transform: translateY(-3cqw); }
+        100% { opacity: 0; }
+      }
+      @keyframes coin2 {
+        0%, 46% { opacity: 0; transform: translateY(2cqw); }
+        48% { opacity: 1; transform: translateY(0); }
+        51% { opacity: 0; transform: translateY(-3cqw); }
+        100% { opacity: 0; }
+      }
+
+      .hud--tag4 { animation-name: tag4; }
+      .hud--bar { animation-name: bar4; }
+      .hud--perfect { animation-name: perfect4; }
+      @keyframes tag4 {
+        0%, 53% { opacity: 0; transform: translateX(-2cqw); }
+        56%, 69% { opacity: 1; transform: translateX(0); }
+        71%, 100% { opacity: 0; }
+      }
+      @keyframes bar4 {
+        0%, 55% { opacity: 0; }
+        58%, 68% { opacity: 1; }
+        70%, 100% { opacity: 0; }
+      }
+      @keyframes perfect4 {
+        0%, 64% { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+        66% { opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+        67.5% { transform: translate(-50%, -50%) scale(1); }
+        69% { opacity: 1; }
+        70.5%, 100% { opacity: 0; }
+      }
+      @keyframes needle {
+        from { left: 3%; }
+        to { left: 94%; }
+      }
+
+      .hud--tag5 { animation-name: tag5; }
+      .hud--combo { animation-name: combo5; }
+      .hud--ing1 { top: 30%; left: 18%; animation-name: ing1; }
+      .hud--ing2 { top: 22%; left: 36%; animation-name: ing2; }
+      .hud--ing3 { top: 34%; left: 54%; animation-name: ing3; }
+      @keyframes tag5 {
+        0%, 73% { opacity: 0; transform: translateX(-2cqw); }
+        76%, 87% { opacity: 1; transform: translateX(0); }
+        89%, 100% { opacity: 0; }
+      }
+      @keyframes combo5 {
+        0%, 79% { opacity: 0; transform: scale(0.5); }
+        81% { opacity: 1; transform: scale(1.2); }
+        82.5% { transform: scale(1); }
+        87% { opacity: 1; }
+        89%, 100% { opacity: 0; }
+      }
+      @keyframes ing1 {
+        0%, 75% { opacity: 0; transform: translate(0, 0) rotate(0); }
+        76.5% { opacity: 1; }
+        79% { opacity: 0; transform: translate(16cqw, 14cqw) rotate(220deg); }
+        100% { opacity: 0; }
+      }
+      @keyframes ing2 {
+        0%, 77% { opacity: 0; transform: translate(0, 0) rotate(0); }
+        78.5% { opacity: 1; }
+        81% { opacity: 0; transform: translate(8cqw, 18cqw) rotate(-200deg); }
+        100% { opacity: 0; }
+      }
+      @keyframes ing3 {
+        0%, 79% { opacity: 0; transform: translate(0, 0) rotate(0); }
+        80.5% { opacity: 1; }
+        83% { opacity: 0; transform: translate(-2cqw, 16cqw) rotate(180deg); }
+        100% { opacity: 0; }
+      }
+
+      @keyframes ctaIn {
+        0%, 91% { opacity: 0; transform: translateX(-50%) translateY(2cqw); }
+        94%, 100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      }
+
+      /* 로고 등장 */
+      .logo--open .logo__mug { animation: mugIn 30s cubic-bezier(0.2, 0.9, 0.2, 1) infinite; }
+      .logo--open .logo__ko { animation: koIn 30s cubic-bezier(0.2, 0.9, 0.2, 1) infinite; }
+      .logo--open .logo__en { animation: enIn 30s linear infinite; }
+      .logo--open .logo__tag { animation: tagIn 30s linear infinite; }
+      @keyframes mugIn {
+        0% { opacity: 0; transform: translateY(-4cqw) scale(0.6); }
+        4% { opacity: 1; transform: translateY(0) scale(1); }
+        5.4% { transform: translateY(0) scale(1.08); }
+        6.5%, 100% { transform: translateY(0) scale(1); opacity: 1; }
+      }
+      @keyframes koIn {
+        0%, 3% { opacity: 0; transform: translateY(2.4cqw); letter-spacing: 0.3em; }
+        7%, 100% { opacity: 1; transform: translateY(0); letter-spacing: 0.06em; }
+      }
+      @keyframes enIn {
+        0%, 6% { opacity: 0; }
+        9%, 100% { opacity: 1; }
+      }
+      @keyframes tagIn {
+        0%, 8% { opacity: 0; }
+        11%, 100% { opacity: 1; }
+      }
+
+      /* 아래 안내 (녹화 시 프레임 밖이라 찍히지 않습니다) */
+      .note {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(246, 242, 228, 0.45);
+        text-align: center;
+        line-height: 1.9;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .scene, .cap, .hud, .cta, .flash { animation: none; }
+        .s6 { opacity: 1; }
+        .cta { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <!-- 1. 타이틀 -->
+      <div class="scene s1">
+        <img src="/trailer/hyehwa-night.svg" alt="" />
+        <div style="position:absolute;inset:0;background:rgba(8,6,14,0.55)"></div>
+        <div class="logo logo--open">
+          <svg class="logo__mug" viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true">
+            <g fill="#fffdf2"><rect x="4" y="3" width="12" height="3"/><rect x="3" y="4" width="2" height="2"/><rect x="15" y="4" width="2" height="2"/></g>
+            <g fill="#d8e6ef"><rect x="4" y="6" width="12" height="15"/></g>
+            <g fill="#e0a72a"><rect x="5" y="9" width="10" height="11"/></g>
+            <g fill="#ffd05c"><rect x="5" y="9" width="10" height="2"/><rect x="6" y="12" width="2" height="6"/></g>
+            <g fill="#d8e6ef"><rect x="16" y="9" width="4" height="7"/></g>
+            <g fill="#14100c"><rect x="18" y="11" width="2" height="3"/><rect x="4" y="21" width="12" height="1"/></g>
+          </svg>
+          <p class="logo__ko">동네 브루펍</p>
+          <p class="logo__en">TOWN BREWPUB</p>
+          <p class="logo__tag">혜화 골목에서 시작하는 우리 술집</p>
+        </div>
+      </div>
+
+      <!-- 2. 낮 → 밤 -->
+      <div class="scene s2">
+        <img src="/trailer/hyehwa-day.svg" alt="" />
+        <img class="night" src="/trailer/hyehwa-night.svg" alt="" />
+        <div class="hud daynight hud--dn"><span>☀</span> <b>DAY</b> → <span>☾</span> <b>NIGHT</b></div>
+        <div class="cap cap--2"><small>HYEHWA, SEOUL</small>낮에는 준비, 밤에는 손님맞이<i></i></div>
+      </div>
+
+      <!-- 3. 술집 운영 -->
+      <div class="scene s3">
+        <img src="/trailer/inside.svg" alt="" />
+        <div class="hud bubble hud--order1">🍺 생맥주 2잔</div>
+        <div class="hud bubble hud--order2">🍗 치킨 한 접시</div>
+        <div class="hud coin hud--coin1">+120</div>
+        <div class="hud coin hud--coin2">+80</div>
+        <div class="cap cap--3"><small>SERVE</small>주문을 받고, 잔을 채워라<i></i></div>
+      </div>
+
+      <!-- 4. 미니게임 1 · 맥주 공장 -->
+      <div class="scene s4">
+        <img src="/trailer/brewery.svg" alt="" />
+        <div class="hud tag hud--tag4">MINI GAME 01 · 독일 맥주 공장</div>
+        <div class="hud bar hud--bar">
+          <div class="bar__zone"></div>
+          <div class="bar__needle"></div>
+        </div>
+        <div class="hud perfect hud--perfect">PERFECT!</div>
+        <div class="cap cap--4"><small>BAVARIAN BREWERY</small>딱 맞는 순간에 멈춰라<i></i></div>
+      </div>
+
+      <!-- 5. 미니게임 2 · 안주 만들기 -->
+      <div class="scene s5">
+        <img src="/trailer/kitchen.svg" alt="" />
+        <div class="hud tag hud--tag5">MINI GAME 02 · 안주 만들기</div>
+        <div class="hud ing hud--ing1">🍅</div>
+        <div class="hud ing hud--ing2">🧀</div>
+        <div class="hud ing hud--ing3">🌶️</div>
+        <div class="hud combo hud--combo">COMBO <span>×3</span></div>
+        <div class="cap cap--5"><small>COOK</small>재료를 골라 나만의 레시피로<i></i></div>
+      </div>
+
+      <!-- 6. 마무리 -->
+      <div class="scene s6">
+        <img src="/trailer/hyehwa-night.svg" alt="" />
+        <div style="position:absolute;inset:0;background:rgba(8,6,14,0.68)"></div>
+        <div class="logo">
+          <p class="logo__ko">동네 브루펍</p>
+          <p class="logo__en">TOWN BREWPUB</p>
+        </div>
+        <div class="cta">지금 플레이</div>
+      </div>
+
+      <div class="flash"></div>
+      <div class="scan"></div>
+      <div class="vignette"></div>
+    </div>
+  </body>
+</html>
