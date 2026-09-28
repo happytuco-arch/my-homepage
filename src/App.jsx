@@ -114,7 +114,7 @@ function Site() {
 
   return (
     <>
-      <Nav view={view} onGo={go} onAdmin={() => setAdmin(isAdmin ? 'panel' : 'login')} />
+      <Nav view={view} onGo={go} />
 
       <main>
         {view === 'home' && (
