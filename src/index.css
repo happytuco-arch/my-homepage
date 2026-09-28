@@ -4594,3 +4594,39 @@ html {
     overflow: visible;
   }
 }
+
+/* ════════════════════════════════════════════════════════════
+   한글 글꼴 D안 — Paperlogy 한 벌
+
+   제목과 본문을 한 글꼴로 통일합니다. 각지고 개성이 뚜렷해서
+   한글만 따로 노는 느낌이 없고, 흰 도록의 정갈함과도 부딪히지
+   않습니다. 라틴 글자는 그대로 Times / Source Sans 를 씁니다.
+
+   제목 자리의 한글도 Paperlogy 로 받습니다 — 명조를 섞으면
+   Paperlogy 의 각진 결과 어긋나기 때문입니다.
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --serif: 'Times New Roman', 'Tinos', Paperlogy, 'Apple SD Gothic Neo', 'Malgun Gothic',
+    Times, serif;
+
+  --sans: 'Source Sans 3', Paperlogy, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕',
+    system-ui, sans-serif;
+
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, Paperlogy, 'Apple SD Gothic Neo',
+    monospace;
+}
+
+/*
+  Paperlogy 는 글자가 크고 각져서, 같은 크기에서 라틴 글자보다 무겁게 보입니다.
+  한글이 들어오는 제목은 자간을 아주 살짝 좁혀 균형을 맞춥니다.
+  (명조를 쓸 때는 반대로 넓혀야 했습니다)
+*/
+.card__title,
+.paper__title,
+.detail__title,
+.post__title,
+.article__title,
+.work__title {
+  letter-spacing: -0.01em;
+}
