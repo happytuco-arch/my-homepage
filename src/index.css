@@ -4208,3 +4208,28 @@ html {
 .about__quote {
   letter-spacing: -0.012em;
 }
+
+/* ---------- 한글 글꼴이 어디서든 보이게 (대비책) ----------
+
+   인터넷에서 글꼴을 못 받는 경우가 있습니다.
+     · 학교·회사 방화벽이 CDN 을 막을 때
+     · 비행기·지하철처럼 연결이 끊길 때
+     · 데이터 절약 모드
+
+   그때 한글이 깨지지 않도록, 기기에 이미 깔려 있는 글꼴을
+   마지막 대비책으로 이어 둡니다.
+     Mac    Apple SD Gothic Neo · AppleMyungjo
+     Windows 맑은 고딕 · 바탕
+     Android Noto Sans KR (기본 탑재)
+*/
+
+:root {
+  --serif: 'Times New Roman', 'Tinos', 'Nanum Myeongjo', 'Noto Serif KR', AppleMyungjo,
+    Batang, '바탕', Times, serif;
+
+  --sans: 'Source Sans 3', 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo',
+    'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', system-ui, sans-serif;
+
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Pretendard Variable', Pretendard,
+    'Apple SD Gothic Neo', 'Malgun Gothic', monospace;
+}
