@@ -5,8 +5,6 @@ import GamesTab from './components/GamesTab'
 import PapersTab from './components/PapersTab'
 import AssignmentsTab from './components/AssignmentsTab'
 import AboutContact from './components/AboutContact'
-import DetailView from './components/DetailView'
-import ProjectDetail from './components/ProjectDetail'
 import AdminLogin from './components/AdminLogin'
 import AdminPanel from './components/AdminPanel'
 import AdminProvider from './admin/AdminProvider'
@@ -32,14 +30,12 @@ export default function App() {
 function Site() {
   const { isAdmin } = useAdmin()
   const [view, setView] = useState('home')
-  const [detail, setDetail] = useState(null)
   const [scrollTo, setScrollTo] = useState(null)
   // 'login' 또는 'panel' — 관리자 창이 열려 있는 상태
   const [admin, setAdmin] = useState(null)
 
   // 상단 메뉴 클릭 처리
   const go = (target) => {
-    setDetail(null)
 
     if (target === 'papers' || target === 'assignments') {
       setView(target)
@@ -127,7 +123,7 @@ function Site() {
 
             {/* 2번째 화면 — Games */}
             <section className="snap snap--work" id="work">
-              <GamesTab onOpen={setDetail} />
+              <GamesTab />
             </section>
 
             {/* 3번째 화면 — About &amp; Contact */}
@@ -145,18 +141,10 @@ function Site() {
 
         {view === 'papers' && (
           <section className="snap snap--work snap--solo">
-            <PapersTab onOpen={setDetail} />
+            <PapersTab />
           </section>
         )}
       </main>
-
-      {/* Supabase 에서 온 작품과 예시 데이터(논문)는 담긴 칸이 달라 보는 화면도 다릅니다 */}
-      {detail &&
-        (detail.source === 'project' ? (
-          <ProjectDetail item={detail} onClose={() => setDetail(null)} />
-        ) : (
-          <DetailView item={detail} onClose={() => setDetail(null)} />
-        ))}
 
       {admin === 'login' && (
         // 로그인에 성공하면 곧바로 올리기 화면으로 넘어갑니다

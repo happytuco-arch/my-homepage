@@ -1,18 +1,45 @@
+import { useMemo } from 'react'
 import { papers as priorWork } from '../data/portfolio'
+import Article from './Article'
 import { usePapers } from '../lib/usePapers'
+import { useReader } from '../lib/useReader'
+import { paperToPost } from '../lib/toPost'
 
 /**
  * Papers 화면.
  *
- *  · 위쪽 — 관리자 화면에서 등록한 논문 (Supabase papers 표)
- *  · 아래쪽 — 코드에 적어 둔 선행연구 목록
- *
- * 등록한 논문이 하나라도 있으면 그쪽이 주인공이 되고,
- * 선행연구는 아래에 참고로 남습니다.
+ * 등록한 논문(Supabase)과 코드에 적어 둔 선행연구를 한 목록으로 잇습니다.
+ * 읽는 사람에게는 둘 다 '논문 글'이므로, 앞뒤로 이어 읽을 수 있어야 합니다.
  */
-export default function PapersTab({ onOpen }) {
+export default function PapersTab() {
   const { status, items, error, reload } = usePapers()
-  const hasRegistered = status === 'ready' && items.length > 0
+
+  // 선행연구도 등록한 논문과 같은 모양으로 맞춰 한 줄에 세웁니다
+  const all = useMemo(() => {
+    const prior = priorWork.map((p) => ({
+      ...p,
+      id: `prior-${p.id}`,
+      pdf: '',
+      kind: 'prior',
+      keywords: p.keywords ?? [],
+      takeaways: p.takeaways ?? [],
+    }))
+    return [...items.map((p) => ({ ...p, kind: 'mine' })), ...prior]
+  }, [items])
+
+  const reader = useReader(all)
+
+  if (reader.open) {
+    return (
+      <Article
+        post={paperToPost(reader.open)}
+        onBack={reader.close}
+        prev={reader.prev}
+        next={reader.next}
+        position={reader.position}
+      />
+    )
+  }
 
   return (
     <section className="wrap section panel">
@@ -22,8 +49,8 @@ export default function PapersTab({ onOpen }) {
           <h2 className="section__title">Papers</h2>
         </div>
         <p className="section__note">
-          {hasRegistered
-            ? `${items.length} papers — newest first.`
+          {items.length > 0
+            ? `${items.length} registered, ${priorWork.length} prior works.`
             : 'Work this project builds on.'}
         </p>
       </div>
@@ -47,76 +74,22 @@ export default function PapersTab({ onOpen }) {
           </div>
         )}
 
-        {hasRegistered && (
-          <div className="masonry masonry--2">
-            {items.map((p) => (
-              <div className="masonry__item" key={p.id}>
-                <PaperCard item={p} onOpen={onOpen} />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* 코드에 적어 둔 선행연구 — 등록한 논문이 있으면 아래로 내려갑니다 */}
-        <div className={hasRegistered ? 'priorwork' : undefined}>
-          {hasRegistered && <p className="uploaded__label">Prior work — reference</p>}
-
-          <div className="masonry masonry--2">
-            {priorWork.map((p) => (
-              <div className="masonry__item" key={p.id}>
-                <PaperCard item={p} onOpen={onOpen} />
-              </div>
-            ))}
-          </div>
+        <div className="postlist">
+          {all.map((p) => (
+            <button key={p.id} className="post" onClick={() => reader.openPost(p)}>
+              <p className="post__meta">
+                <span>{p.kind === 'mine' ? 'Registered' : 'Prior work'}</span>
+                {p.venue && <span>{p.venue}</span>}
+                {p.year && <span>{p.year}</span>}
+                {p.citations != null && <span>Cited {p.citations}</span>}
+              </p>
+              <h3 className="post__title">{p.title}</h3>
+              {p.summary && <p className="post__sub">{p.summary}</p>}
+              <span className="post__go">Read →</span>
+            </button>
+          ))}
         </div>
       </div>
     </section>
-  )
-}
-
-/** 논문 카드 한 장 — 등록한 논문과 선행연구가 같은 모양을 씁니다 */
-function PaperCard({ item, onOpen }) {
-  return (
-    <button className="paper" onClick={() => onOpen(item)}>
-      <div className="paper__top">
-        <span className="paper__index">{item.index}</span>
-        {item.field && <span className="chip chip--key">{item.field}</span>}
-        <span className="chip">{item.venue}</span>
-      </div>
-
-      <h3 className="paper__title">{item.title}</h3>
-      <p className="paper__authors">
-        {[item.authors, item.year].filter(Boolean).join(' · ')}
-      </p>
-      {item.summary && <p className="paper__summary">{item.summary}</p>}
-
-      {item.keywords.length > 0 && (
-        <div className="paper__keys">
-          {item.keywords.map((k) => (
-            <span className="chip" key={k}>
-              #{k}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <div className="paper__foot">
-        {item.citations != null && (
-          <>
-            <span>
-              Cited by {item.citations} ({item.citationSource})
-            </span>
-            <i className="dot" />
-          </>
-        )}
-        {item.pdf && (
-          <>
-            <span>PDF</span>
-            <i className="dot" />
-          </>
-        )}
-        <span>Read →</span>
-      </div>
-    </button>
   )
 }

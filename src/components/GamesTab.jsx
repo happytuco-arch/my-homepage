@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react'
+import Article from './Article'
 import { useProjects } from '../lib/useProjects'
+import { useReader } from '../lib/useReader'
+import { projectToPost } from '../lib/toPost'
 
 /**
  * 화면에 걸 작품을 고릅니다.
@@ -32,9 +35,11 @@ function pickForDisplay(items) {
  * 실패했을 때 예시 데이터로 덮지 않습니다. 화면이 멀쩡해 보이면
  * 연결이 끊긴 것을 눈치채지 못하기 때문입니다.
  */
-export default function GamesTab({ onOpen }) {
+export default function GamesTab() {
   const { status, items, error, reload } = useProjects()
   const [showAll, setShowAll] = useState(false)
+  // 화면에 걸린 작품들 사이를 이어서 볼 수 있게 합니다
+  const reader = useReader(items)
 
   // 화면을 열 때 한 번만 고릅니다 (작품 목록이 바뀌면 다시 고릅니다)
   const selection = useMemo(() => pickForDisplay(items), [items])
@@ -44,6 +49,18 @@ export default function GamesTab({ onOpen }) {
     status === 'ready' && items.length > 0
       ? `${shown.length} of ${items.length} — the selection changes each visit.`
       : 'From the projects table.'
+
+  if (reader.open) {
+    return (
+      <Article
+        post={projectToPost(reader.open)}
+        onBack={reader.close}
+        prev={reader.prev}
+        next={reader.next}
+        position={reader.position}
+      />
+    )
+  }
 
   return (
     // 전체 보기를 켜면 한 화면에 가두던 제한을 풉니다
@@ -67,12 +84,12 @@ export default function GamesTab({ onOpen }) {
           <>
             {/* 왼쪽에 대표작 한 점, 오른쪽에 나머지를 2×2 로 */}
             <div className="feature">
-              <ProjectCard item={shown[0]} size="lg" onOpen={onOpen} />
+              <ProjectCard item={shown[0]} size="lg" onOpen={reader.openPost} />
 
               {shown.length > 1 && (
                 <div className="feature__side">
                   {shown.slice(1).map((item) => (
-                    <ProjectCard key={item.id} item={item} size="sm" onOpen={onOpen} />
+                    <ProjectCard key={item.id} item={item} size="sm" onOpen={reader.openPost} />
                   ))}
                 </div>
               )}
