@@ -4233,3 +4233,147 @@ html {
   --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Pretendard Variable', Pretendard,
     'Apple SD Gothic Neo', 'Malgun Gothic', monospace;
 }
+
+/* ════════════════════════════════════════════════════════════
+   과제 제출물 — 프롬프트가 본문인 화면
+   ════════════════════════════════════════════════════════════ */
+
+.worklist {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vw, 80px);
+}
+
+.work {
+  padding-bottom: clamp(32px, 5vw, 56px);
+  border-bottom: 1px solid var(--line);
+}
+
+.worklist > .work:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.work__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin: 10px 0 0;
+}
+
+.work__note {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+.work__shot {
+  margin-top: clamp(18px, 2.6vw, 28px);
+}
+
+.work__shot img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+  border: 1px solid var(--line);
+}
+
+/* ---------- 프롬프트 상자 ---------- */
+
+.prompt {
+  margin-top: clamp(18px, 2.6vw, 28px);
+  max-width: 860px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.prompt__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.prompt__bar .btn-ghost {
+  padding: 4px 10px;
+  font-size: 9.5px;
+}
+
+/* 프롬프트는 준 그대로 보여야 하므로 줄바꿈과 띄어쓰기를 지킵니다 */
+.prompt__body {
+  margin: 0;
+  padding: clamp(14px, 2vw, 20px);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.95;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.prompt > .btn-ghost {
+  display: block;
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--line);
+  padding: 9px;
+}
+
+.work__links {
+  display: flex;
+  gap: clamp(16px, 2.4vw, 28px);
+  flex-wrap: wrap;
+  margin: clamp(16px, 2.2vw, 22px) 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.work__links a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
+  transition: border-color 0.25s ease;
+}
+
+.work__links a:hover {
+  border-color: var(--ink);
+}
+
+/* 관리자 — 프롬프트 입력칸은 고정폭으로 (줄 맞춰 붙여넣기 좋게) */
+.field__input--prompt {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.8;
+  min-height: 200px;
+}
+
+/* 과제 화면은 길어질 수 있으므로 한 화면에 가두지 않습니다 */
+@media (min-width: 861px) and (min-height: 700px) {
+  .snap--solo:has(.worklist) {
+    height: auto;
+    min-height: calc(100dvh - var(--nav-h));
+    display: block;
+    overflow: visible;
+  }
+
+  .snap--solo:has(.worklist) > .panel,
+  .snap--solo:has(.worklist) .panel__body {
+    display: block;
+    flex: none;
+    overflow: visible;
+  }
+}

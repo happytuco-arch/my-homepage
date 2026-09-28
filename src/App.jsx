@@ -3,6 +3,7 @@ import Nav from './components/Nav'
 import Hero, { Ticker } from './components/Hero'
 import GamesTab from './components/GamesTab'
 import PapersTab from './components/PapersTab'
+import AssignmentsTab from './components/AssignmentsTab'
 import AboutContact from './components/AboutContact'
 import DetailView from './components/DetailView'
 import ProjectDetail from './components/ProjectDetail'
@@ -40,7 +41,7 @@ function Site() {
   const go = (target) => {
     setDetail(null)
 
-    if (target === 'papers') {
+    if (target === 'papers' || target === 'assignments') {
       setView(target)
       setScrollTo('top')
       return
@@ -51,6 +52,28 @@ function Site() {
     else if (target === 'about' || target === 'contact') setScrollTo('contact')
     else setScrollTo('top')
   }
+
+  /*
+    관리자 화면으로 들어가는 길.
+
+    상단에 단추를 두지 않으므로, 주소 끝에 #admin 을 붙이면 열립니다.
+      https://…vercel.app/#admin
+    열고 나서는 주소를 원래대로 되돌려, 화면에 흔적이 남지 않게 합니다.
+
+    ※ 이것은 잠금장치가 아니라 가림막입니다. 진짜 보호는 비밀번호와
+      Supabase 쪽 규칙(RLS)이 합니다.
+  */
+  useEffect(() => {
+    const open = () => {
+      if (window.location.hash.toLowerCase() !== '#admin') return
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+      setAdmin(isAdmin ? 'panel' : 'login')
+    }
+
+    open()
+    window.addEventListener('hashchange', open)
+    return () => window.removeEventListener('hashchange', open)
+  }, [isAdmin])
 
   // 화면이 바뀐 뒤에 이동합니다 (그려지기 전에 움직이면 엉뚱한 곳으로 갑니다)
   useEffect(() => {
@@ -112,6 +135,12 @@ function Site() {
               <AboutContact />
             </section>
           </>
+        )}
+
+        {view === 'assignments' && (
+          <section className="snap snap--work snap--solo">
+            <AssignmentsTab />
+          </section>
         )}
 
         {view === 'papers' && (

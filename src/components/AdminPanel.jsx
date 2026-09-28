@@ -10,6 +10,7 @@ import {
 } from '../admin/projectsApi'
 import { useProjects } from '../lib/useProjects'
 import AdminPapers from './AdminPapers'
+import AdminAssignments from './AdminAssignments'
 
 const EMPTY = { id: null, title: '', description: '', imageUrl: '', videoUrl: '', pinned: false }
 
@@ -166,7 +167,13 @@ export default function AdminPanel({ onClose }) {
           <div>
             <p className="kicker">Admin · {user?.email}</p>
             <h2 className="adminbox__title">
-              {mode === 'paper' ? '논문 등록' : editing ? '작품 수정' : '작품 등록'}
+              {mode === 'paper'
+                ? '논문 등록'
+                : mode === 'assignment'
+                  ? '과제 등록'
+                  : editing
+                    ? '작품 수정'
+                    : '작품 등록'}
             </h2>
           </div>
           <button
@@ -199,10 +206,20 @@ export default function AdminPanel({ onClose }) {
           >
             논문<span>DOI · PDF</span>
           </button>
+          <button
+            type="button"
+            className={`kindtab${mode === 'assignment' ? ' is-active' : ''}`}
+            onClick={() => setMode('assignment')}
+            aria-pressed={mode === 'assignment'}
+          >
+            과제<span>프롬프트 · 결과물</span>
+          </button>
         </div>
 
         {mode === 'paper' ? (
           <AdminPapers />
+        ) : mode === 'assignment' ? (
+          <AdminAssignments />
         ) : (
           <>
         <form className="adminform" onSubmit={submit}>
@@ -345,7 +362,13 @@ export default function AdminPanel({ onClose }) {
         )}
 
         <p className="adminbox__note">
-          {mode === 'paper' ? (
+          {mode === 'assignment' ? (
+            <>
+              프롬프트를 통째로 붙여넣어 두면, 나중에 무엇을 어떻게 물었는지 그대로
+              돌아볼 수 있습니다. 사진과 첨부 파일은 Storage 의 <code>assignments/</code> 칸에
+              올라갑니다.
+            </>
+          ) : mode === 'paper' ? (
             <>
               DOI 를 넣고 <b>정보 가져오기</b>를 누르면 제목·저자·학술지·연도·인용수·초록이
               공개 학술 데이터베이스에서 자동으로 채워집니다. AI 가 읽고 새로 쓰는 요약이
