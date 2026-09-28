@@ -4148,3 +4148,63 @@ html {
     max-width: 100%;
   }
 }
+
+/* ════════════════════════════════════════════════════════════
+   한글 글꼴 — 영문 짝에 맞추기
+
+   영문 글꼴에는 한글이 없어서, 한 문장 안에서도 한글 글자만
+   뒤쪽 글꼴로 넘어갑니다. 그 짝을 제대로 정해 주지 않으면
+   같은 줄에서 크기와 무게가 따로 놉니다.
+
+     세리프  Times New Roman ↔ 나눔명조
+     산세리프 Source Sans 3   ↔ Pretendard
+     모노     IBM Plex Mono   ↔ Pretendard (한글엔 고정폭이 없습니다)
+
+   Pretendard 는 라틴 산세리프의 비율에 맞춰 만든 한글 글꼴이라
+   섞어 써도 튀지 않습니다. (전에는 목록에만 있고 실제로 받아
+   오지는 않아서 본고딕이 쓰이고 있었습니다)
+   ════════════════════════════════════════════════════════════ */
+
+:root {
+  --serif: 'Times New Roman', 'Tinos', 'Nanum Myeongjo', Times, serif;
+  --sans: 'Source Sans 3', 'Pretendard Variable', Pretendard, 'Noto Sans KR', system-ui,
+    sans-serif;
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Pretendard Variable', Pretendard,
+    monospace;
+}
+
+/*
+  자간 — 영문 제목은 좁혀야 단단해 보이지만, 한글은 좁히면 글자가 붙어
+  읽기 어려워집니다. 한글이 들어올 수 있는 자리는 좁힘을 풀어 줍니다.
+  (작품 제목·설명은 등록한 내용이라 어느 쪽 글자가 올지 알 수 없습니다)
+*/
+.card__title,
+.paper__title,
+.detail__title,
+.mcard__title {
+  letter-spacing: 0;
+}
+
+/* 한글은 글자가 네모나서 줄 간격이 촘촘하면 답답합니다 */
+.card__sub,
+.paper__summary,
+.detail__text,
+.mcard__text {
+  line-height: 1.8;
+}
+
+/*
+  라벨 — 모노 대문자에 넓은 자간을 씁니다. 여기에 한글이 들어오면
+  낱자가 흩어져 보이므로, 한글이 섞일 수 있는 라벨만 자간을 줄입니다.
+*/
+.card__meta,
+.chip {
+  letter-spacing: 0.12em;
+}
+
+/* 영문 전용 자리(제목·메뉴·머리글)는 원래의 좁은 자간을 지킵니다 */
+.hero__name,
+.section__title,
+.about__quote {
+  letter-spacing: -0.012em;
+}

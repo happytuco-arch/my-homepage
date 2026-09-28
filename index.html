@@ -11,14 +11,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      영문 — 제목은 Times New Roman(윈도우·맥에 기본 설치)을 씁니다.
-      Tinos는 Times New Roman과 글자 폭이 같은 대체 폰트로,
-      해당 폰트가 없는 기기에서 레이아웃이 흐트러지지 않게 받아 둡니다.
+      글꼴은 영문 하나에 한글 하나를 짝지어 씁니다.
+      영문 글꼴에는 한글이 없어서, 한글 글자만 자동으로 짝에게 넘어갑니다.
 
-      한글 — 나눔명조(제목)와 본고딕(본문)을 함께 받아 옵니다.
-      방문자 기기에 한글 글꼴이 없어도 깨지지 않고, 어디서나 같은 모습으로 보입니다.
-      필요한 글자 조각만 내려받는 방식이라 용량 부담은 크지 않습니다.
+        제목·인용 (세리프)  Times New Roman  ↔  나눔명조
+                            둘 다 획의 굵기 차이가 뚜렷한 고전 활자입니다.
+        본문 (산세리프)     Source Sans 3    ↔  Pretendard
+                            Pretendard 는 라틴 산세리프의 비율에 맞춰 만든
+                            한글 글꼴이라, 섞어 써도 크기와 무게가 튀지 않습니다.
+        라벨 (모노)         IBM Plex Mono    ↔  Pretendard
+                            한글에는 고정폭 활자가 마땅치 않아 본문 짝을 씁니다.
+
+      Tinos 는 Times New Roman 이 없는 기기를 위한 같은 폭의 대체 글꼴입니다.
+      모두 필요한 글자 조각만 내려받아 용량 부담이 적습니다.
     -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
       rel="stylesheet"
