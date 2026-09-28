@@ -16,7 +16,7 @@ const EMPTY = {
   note: '',
   resultUrl: '',
   imageUrl: '',
-  fileUrl: '',
+  attachments: [],
 }
 
 /**
@@ -29,21 +29,20 @@ export default function AdminAssignments() {
   const { items, status, error: listError, reload } = useAssignments()
 
   const [form, setForm] = useState(EMPTY)
-  const [files, setFiles] = useState({ image: null, file: null })
+  const [files, setFiles] = useState({ image: null })
   const [busy, setBusy] = useState('')
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
   const imageRef = useRef(null)
-  const fileRef = useRef(null)
+  const attachRef = useRef(null)
 
   const editing = Boolean(form.id)
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const clearForm = () => {
     setForm(EMPTY)
-    setFiles({ image: null, file: null })
+    setFiles({ image: null })
     if (imageRef.current) imageRef.current.value = ''
-    if (fileRef.current) fileRef.current.value = ''
   }
 
   const startEdit = (a) => {
@@ -57,12 +56,50 @@ export default function AdminAssignments() {
       note: r.note || '',
       resultUrl: r.result_url || '',
       imageUrl: r.image_url || '',
-      fileUrl: r.file_url || '',
+      attachments: Array.isArray(r.attachments) ? r.attachments : [],
     })
-    setFiles({ image: null, file: null })
+    setFiles({ image: null })
     setError('')
     setDone('')
   }
+
+  /**
+   * 프로젝트물은 고르는 즉시 올립니다.
+   * 저장 단추를 누르기 전에 끝내 두어야, 여러 개를 올리다 실패해도
+   * 어디까지 됐는지 눈으로 보입니다.
+   */
+  const addAttachments = async (fileList) => {
+    const picked = [...(fileList || [])]
+    if (picked.length === 0) return
+
+    setError('')
+    setDone('')
+
+    const added = []
+    try {
+      for (const [i, file] of picked.entries()) {
+        setBusy(`파일 올리는 중… (${i + 1}/${picked.length})`)
+        const { url } = await uploadAssignmentFile(file)
+        added.push({
+          name: file.name,
+          url,
+          type: file.type.startsWith('image/') ? 'image' : 'file',
+        })
+      }
+      setDone(`${added.length}개 올렸습니다. 저장을 눌러야 과제에 붙습니다.`)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      // 실패해도 여기까지 올라간 것은 목록에 남깁니다
+      if (added.length) setForm((f) => ({ ...f, attachments: [...f.attachments, ...added] }))
+      if (attachRef.current) attachRef.current.value = ''
+      setBusy('')
+    }
+  }
+
+  /** 목록에서만 빼냅니다 (Storage 의 파일은 그대로 남습니다) */
+  const removeAttachment = (i) =>
+    setForm((f) => ({ ...f, attachments: f.attachments.filter((_, n) => n !== i) }))
 
   const submit = async (e) => {
     e.preventDefault()
@@ -84,15 +121,6 @@ export default function AdminAssignments() {
         setForm(next)
         setFiles((f) => ({ ...f, image: null }))
         if (imageRef.current) imageRef.current.value = ''
-      }
-
-      if (files.file) {
-        setBusy('첨부 파일 올리는 중…')
-        const { url } = await uploadAssignmentFile(files.file)
-        next = { ...next, fileUrl: url }
-        setForm(next)
-        setFiles((f) => ({ ...f, file: null }))
-        if (fileRef.current) fileRef.current.value = ''
       }
 
       setBusy(editing ? '수정하는 중…' : '등록하는 중…')
@@ -222,21 +250,47 @@ export default function AdminAssignments() {
           onClear={() => setForm((f) => ({ ...f, imageUrl: '' }))}
         />
 
-        <FilePick
-          id="asg-file"
-          label="첨부 파일"
-          hint="PDF · ZIP 등"
-          accept=".pdf,.zip,.txt,.md,application/pdf"
-          inputRef={fileRef}
-          file={files.file}
-          url={form.fileUrl}
-          onPick={(f) => {
-            setError('')
-            setDone('')
-            setFiles((s) => ({ ...s, file: f ?? null }))
-          }}
-          onClear={() => setForm((f) => ({ ...f, fileUrl: '' }))}
-        />
+        {/* 프로젝트물 — 여러 개를 한 번에 고를 수 있습니다 */}
+        <div className="field">
+          <span className="field__label">
+            프로젝트물 <i>선택 · 여러 개 가능 · 고르면 바로 올라갑니다</i>
+          </span>
+
+          <div className="dropzone">
+            <input
+              ref={attachRef}
+              id="asg-files"
+              className="dropzone__input"
+              type="file"
+              multiple
+              onChange={(e) => addAttachments(e.target.files)}
+            />
+            <label className="dropzone__label" htmlFor="asg-files">
+              <b>파일 고르기</b>
+              <span>사진 · PDF · ZIP · 무엇이든 · 한 번에 여러 개</span>
+            </label>
+          </div>
+
+          {form.attachments.length > 0 && (
+            <ul className="attachlist">
+              {form.attachments.map((a, i) => (
+                <li key={a.url}>
+                  <span className="attachlist__kind">{a.type === 'image' ? 'IMG' : 'FILE'}</span>
+                  <a href={a.url} target="_blank" rel="noopener noreferrer">
+                    {a.name}
+                  </a>
+                  <button
+                    className="btn-ghost btn-ghost--danger"
+                    type="button"
+                    onClick={() => removeAttachment(i)}
+                  >
+                    빼기
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         {error && (
           <p className="adminbox__error" role="alert">

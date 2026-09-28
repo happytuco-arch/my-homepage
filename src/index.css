@@ -4377,3 +4377,73 @@ html {
     overflow: visible;
   }
 }
+
+/* ---------- 과제 — 올려 둔 프로젝트물 ---------- */
+
+/* 사진 여러 장을 나란히 */
+.shots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  margin-top: clamp(16px, 2.4vw, 24px);
+}
+
+.shots img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  transition: border-color 0.25s ease;
+}
+
+.shots a:hover img {
+  border-color: var(--ink);
+}
+
+.filelist--work {
+  margin-top: clamp(14px, 2vw, 20px);
+  max-width: 620px;
+}
+
+/* 관리자 — 붙여 둔 파일 목록 */
+.attachlist {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.attachlist li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--ivory-deep);
+  font-size: 12.5px;
+}
+
+.attachlist a {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+}
+
+.attachlist__kind {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  padding: 3px 6px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.attachlist .btn-ghost {
+  flex: none;
+  padding: 4px 9px;
+  font-size: 9.5px;
+}

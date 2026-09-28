@@ -77,7 +77,7 @@ function toRow(f) {
     note: t(f.note),
     result_url: t(f.resultUrl),
     image_url: t(f.imageUrl),
-    file_url: t(f.fileUrl),
+    attachments: Array.isArray(f.attachments) ? f.attachments : [],
   }
 }
 

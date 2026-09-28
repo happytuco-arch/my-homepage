@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { configMessage, isSupabaseReady, mediaUrl, supabase } from './supabase'
 
 const COLUMNS =
-  'id, title, course, week, prompt, note, result_url, image_url, file_url, created_at'
+  'id, title, course, week, prompt, note, result_url, image_url, attachments, created_at'
 
 /** 여러 화면이 같이 새로 고쳐지도록 모아 둡니다 */
 const listeners = new Set()
@@ -72,7 +72,12 @@ function normalize(row, i) {
     note: row.note?.trim() || '',
     resultUrl: row.result_url?.trim() || '',
     image: mediaUrl(row.image_url),
-    file: mediaUrl(row.file_url),
+    // 올려 둔 프로젝트물 목록 — 사진과 그 밖의 파일을 나눠 둡니다
+    attachments: (Array.isArray(row.attachments) ? row.attachments : []).map((a) => ({
+      name: a?.name || '파일',
+      url: mediaUrl(a?.url),
+      isImage: a?.type === 'image',
+    })).filter((a) => a.url),
     dateLabel: at ? at.toLocaleDateString('ko-KR') : '',
     raw: row,
   }

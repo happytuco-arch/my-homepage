@@ -21,7 +21,8 @@
 --    note        무엇을 의도했고 무엇이 나왔는지 짧은 메모
 --    result_url  결과물 주소 (배포 링크 · 깃헙 등)
 --    image_url   결과 화면 사진
---    file_url    올려 둔 파일 (PDF 등)
+--    attachments 올려 둔 프로젝트물 목록 (여러 개)
+--                [{ name, url, type }] 모양으로 담깁니다
 --    created_at  등록 시각
 -- ─────────────────────────────────────────────────────────────
 
@@ -34,7 +35,7 @@ create table if not exists public.assignments (
   note        text,
   result_url  text,
   image_url   text,
-  file_url    text,
+  attachments jsonb not null default '[]'::jsonb,
   created_at  timestamptz not null default now()
 );
 

@@ -69,6 +69,9 @@ function Assignment({ item }) {
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
+  const images = item.attachments.filter((a) => a.isImage)
+  const docs = item.attachments.filter((a) => !a.isImage)
+
   const long = item.prompt.length > 320
   const shown = open || !long ? item.prompt : `${item.prompt.slice(0, 320)}…`
 
@@ -120,18 +123,38 @@ function Assignment({ item }) {
         </div>
       )}
 
-      {(item.resultUrl || item.file) && (
+      {/* 올려 둔 프로젝트물 — 사진은 늘어놓고, 그 밖의 파일은 목록으로 */}
+      {images.length > 0 && (
+        <div className="shots">
+          {images.map((a) => (
+            <a key={a.url} href={a.url} target="_blank" rel="noopener noreferrer">
+              <img src={a.url} alt={a.name} decoding="async" />
+            </a>
+          ))}
+        </div>
+      )}
+
+      {docs.length > 0 && (
+        <ul className="filelist filelist--work">
+          {docs.map((a) => (
+            <li className="filecard" key={a.url}>
+              <span className="filecard__type">FILE</span>
+              <div className="filecard__meta">
+                <b>{a.name}</b>
+              </div>
+              <a className="btn-ghost" href={a.url} target="_blank" rel="noopener noreferrer">
+                열기 →
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {item.resultUrl && (
         <p className="work__links">
-          {item.resultUrl && (
-            <a href={item.resultUrl} target="_blank" rel="noopener noreferrer">
-              결과물 보기 →
-            </a>
-          )}
-          {item.file && (
-            <a href={item.file} target="_blank" rel="noopener noreferrer">
-              첨부 파일 →
-            </a>
-          )}
+          <a href={item.resultUrl} target="_blank" rel="noopener noreferrer">
+            결과물 보기 →
+          </a>
         </p>
       )}
     </article>
