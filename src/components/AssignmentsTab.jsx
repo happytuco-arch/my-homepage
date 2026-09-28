@@ -1,14 +1,27 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAssignments } from '../lib/useAssignments'
 
 /**
- * 과제 제출물 화면.
+ * 과제 제출물 — 글 목록 + 글 읽기.
  *
- * 이 화면의 주인공은 '프롬프트'입니다. AI 에게 무엇을 어떻게 물었는지가
- * 결과물만큼, 때로는 결과물보다 중요한 기록이라서 본문처럼 크게 싣습니다.
+ * Anthropic 연구 팀 페이지와 같은 짜임입니다.
+ *   목록 : 분류 · 날짜 / 큰 제목 / 짧은 설명 이 머리카락 선으로 구분되어 쌓입니다
+ *   글   : 제목을 누르면 프롬프트와 결과물이 있는 읽기 화면으로 들어갑니다
+ *
+ * 과제가 매주 쌓여도 목록은 한 줄씩만 길어지므로 오래 버팁니다.
  */
 export default function AssignmentsTab() {
   const { status, items, error, reload } = useAssignments()
+  const [openId, setOpenId] = useState(null)
+
+  const open = items.find((a) => a.id === openId) || null
+
+  // 글로 들어가거나 나올 때는 화면 맨 위로
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [openId])
+
+  if (open) return <Post item={open} onBack={() => setOpenId(null)} />
 
   return (
     <section className="wrap section panel">
@@ -18,9 +31,8 @@ export default function AssignmentsTab() {
           <h2 className="section__title">Assignments</h2>
         </div>
         <p className="section__note">
-          {status === 'ready' && items.length > 0
-            ? `${items.length} submissions — newest first.`
-            : 'Prompts and what came out of them.'}
+          What I asked the AI, and what came back. Each entry keeps the prompt as it was written,
+          alongside the files it produced.
         </p>
       </div>
 
@@ -47,16 +59,22 @@ export default function AssignmentsTab() {
           <div className="state">
             <p className="state__mark">Empty</p>
             <p className="state__title">No submissions yet.</p>
-            <p className="state__text">
-              Sign in as admin and add one — a prompt, a note, and the result.
-            </p>
+            <p className="state__text">The first entry will appear here.</p>
           </div>
         )}
 
         {status === 'ready' && items.length > 0 && (
-          <div className="worklist">
+          <div className="postlist">
             {items.map((a) => (
-              <Assignment key={a.id} item={a} />
+              <button key={a.id} className="post" onClick={() => setOpenId(a.id)}>
+                <p className="post__meta">
+                  {a.week && <span>{a.week}</span>}
+                  {a.course && <span>{a.course}</span>}
+                  <span>{a.dateLabel}</span>
+                </p>
+                <h3 className="post__title">{a.title}</h3>
+                {a.note && <p className="post__sub">{a.note}</p>}
+              </button>
             ))}
           </div>
         )}
@@ -65,15 +83,12 @@ export default function AssignmentsTab() {
   )
 }
 
-function Assignment({ item }) {
-  const [open, setOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
+/* ---------- 글 한 편 ---------- */
 
+function Post({ item, onBack }) {
+  const [copied, setCopied] = useState(false)
   const images = item.attachments.filter((a) => a.isImage)
   const docs = item.attachments.filter((a) => !a.isImage)
-
-  const long = item.prompt.length > 320
-  const shown = open || !long ? item.prompt : `${item.prompt.slice(0, 320)}…`
 
   const copy = async () => {
     try {
@@ -86,20 +101,23 @@ function Assignment({ item }) {
   }
 
   return (
-    <article className="work">
-      <header className="work__head">
-        <p className="card__meta">
-          <b>{item.index}</b>
+    <article className="wrap section article">
+      <button className="article__back" onClick={onBack}>
+        ← All assignments
+      </button>
+
+      <header className="article__head">
+        <p className="post__meta">
           {item.week && <span>{item.week}</span>}
           {item.course && <span>{item.course}</span>}
-          {item.dateLabel && <span>{item.dateLabel}</span>}
+          <span>{item.dateLabel}</span>
         </p>
-        <h3 className="work__title">{item.title}</h3>
-        {item.note && <p className="work__note">{item.note}</p>}
+        <h2 className="article__title">{item.title}</h2>
+        {item.note && <p className="article__lead">{item.note}</p>}
       </header>
 
       {item.image && (
-        <div className="work__shot">
+        <div className="article__cover">
           <img src={item.image} alt={item.title} decoding="async" />
         </div>
       )}
@@ -112,18 +130,10 @@ function Assignment({ item }) {
               {copied ? '복사됨' : '복사'}
             </button>
           </div>
-
-          <pre className="prompt__body">{shown}</pre>
-
-          {long && (
-            <button className="btn-ghost" type="button" onClick={() => setOpen((v) => !v)}>
-              {open ? '접기' : '전체 보기'}
-            </button>
-          )}
+          <pre className="prompt__body">{item.prompt}</pre>
         </div>
       )}
 
-      {/* 올려 둔 프로젝트물 — 사진은 늘어놓고, 그 밖의 파일은 목록으로 */}
       {images.length > 0 && (
         <div className="shots">
           {images.map((a) => (
@@ -157,6 +167,10 @@ function Assignment({ item }) {
           </a>
         </p>
       )}
+
+      <button className="article__back article__back--foot" onClick={onBack}>
+        ← All assignments
+      </button>
     </article>
   )
 }

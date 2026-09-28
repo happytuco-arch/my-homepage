@@ -4447,3 +4447,150 @@ html {
   padding: 4px 9px;
   font-size: 9.5px;
 }
+
+/* ════════════════════════════════════════════════════════════
+   과제 — 글 목록과 글 (Anthropic 연구 페이지 짜임)
+
+   목록은 카드가 아니라 '줄'입니다. 머리카락 선으로만 나누어,
+   과제가 매주 쌓여도 화면이 어수선해지지 않습니다.
+   ════════════════════════════════════════════════════════════ */
+
+.postlist {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+  max-width: 940px;
+}
+
+.post {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: clamp(20px, 3vw, 32px) 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  transition: opacity 0.25s ease;
+}
+
+.post:hover {
+  opacity: 0.6;
+}
+
+/* 분류 · 날짜 줄 */
+.post__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.post__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.25rem, 2.4vw, 1.95rem);
+  line-height: 1.25;
+  letter-spacing: 0;
+  margin: 10px 0 0;
+  max-width: 34ch;
+}
+
+.post__sub {
+  margin: 9px 0 0;
+  max-width: 62ch;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+/* ---------- 글 읽기 화면 ---------- */
+
+.article {
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.article__back {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 0;
+  transition: color 0.2s ease;
+}
+
+.article__back:hover {
+  color: var(--ink);
+}
+
+.article__back--foot {
+  display: block;
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: clamp(20px, 3vw, 32px);
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+
+.article__head {
+  margin-top: clamp(22px, 3.4vw, 40px);
+  padding-bottom: clamp(20px, 3vw, 32px);
+  border-bottom: 1px solid var(--line);
+}
+
+.article__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.7rem, 4vw, 3rem);
+  line-height: 1.18;
+  letter-spacing: -0.008em;
+  margin: 12px 0 0;
+}
+
+.article__lead {
+  margin: clamp(14px, 2vw, 20px) 0 0;
+  max-width: 56ch;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+.article__cover {
+  margin-top: clamp(24px, 3.6vw, 40px);
+}
+
+.article__cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+}
+
+/* 글 안에서는 여백을 더 줍니다 */
+.article .prompt,
+.article .shots,
+.article .filelist--work {
+  margin-top: clamp(24px, 3.6vw, 40px);
+}
+
+/* 글도 목록도 길어질 수 있으므로 한 화면에 가두지 않습니다 */
+@media (min-width: 861px) and (min-height: 700px) {
+  .snap--solo:has(.postlist),
+  .snap--solo:has(.article) {
+    height: auto;
+    min-height: calc(100dvh - var(--nav-h));
+    display: block;
+    overflow: visible;
+  }
+
+  .snap--solo:has(.postlist) > .panel,
+  .snap--solo:has(.postlist) .panel__body {
+    display: block;
+    flex: none;
+    overflow: visible;
+  }
+}
