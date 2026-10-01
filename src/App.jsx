@@ -94,11 +94,24 @@ function Site() {
       if (r.top < window.innerHeight && r.bottom > 0) p.classList.add('is-in')
     })
 
+    /*
+      한 번 드러난 장은 다시 숨기지 않습니다.
+
+      예전에는 "장의 35%가 보일 때만 드러내기"였는데, 글이 길어지면
+      장의 높이가 화면의 세 배를 넘어 35%가 영영 채워지지 않습니다.
+      그러면 내용이 통째로 사라집니다(과제 글에서 실제로 그랬습니다).
+
+      이제 조금이라도 보이면 드러내고, 그 뒤로는 관찰을 멈춥니다.
+    */
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => e.target.classList.toggle('is-in', e.isIntersecting))
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return
+          e.target.classList.add('is-in')
+          io.unobserve(e.target)
+        })
       },
-      { threshold: 0.35 },
+      { threshold: 0.01 },
     )
     panels.forEach((p) => io.observe(p))
 
