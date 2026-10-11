@@ -4,14 +4,17 @@ import { useProjects } from '../lib/useProjects'
 import { useReader } from '../lib/useReader'
 import { projectToPost } from '../lib/toPost'
 
-/** 한 화면에 걸 작품 수 — 대표작 1 + 오른쪽 2×2 */
+/**
+ * 첫 화면에 걸 작품 수 — 대표작 1 + 오른쪽 2×2.
+ * 최근 다섯 점만 걸리고, 그 전 작품은 'View all' 을 눌러야 나옵니다.
+ */
 const LEAD_COUNT = 5
 
 /**
  * 작품을 걸 순서를 정합니다.
  *
  *  · 대표 작품('항상 첫 번째')이 있으면 언제나 맨 앞
- *  · 나머지는 올린 순서대로
+ *  · 나머지는 최근에 올린 것부터
  *
  * 예전에는 무작위로 골랐습니다. 볼 때마다 다른 작품이 걸리는 재미가
  * 있었지만, 무엇이 걸릴지 내가 정할 수 없고 "아까 본 그것"을 다시
@@ -68,7 +71,7 @@ export default function GamesTab({ expand = 0 }) {
 
   const note =
     status === 'ready' && items.length > 0
-      ? `${shown.length} of ${items.length} — in the order they were added.`
+      ? `${shown.length} of ${items.length} — the most recent first.`
       : 'From the projects table.'
 
   if (reader.open) {

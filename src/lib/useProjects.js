@@ -11,7 +11,7 @@ const COLUMNS = 'id, title, description, image_url, video_url, link_url, pinned,
 const listeners = new Set()
 
 /**
- * projects 표를 올린 순서대로(먼저 올린 것이 앞) 읽어 옵니다.
+ * projects 표를 최근에 올린 것부터 읽어 옵니다.
  *
  * 돌려주는 status —
  *   'loading'  불러오는 중
@@ -37,7 +37,7 @@ export function useProjects() {
     const { data, error: dbError } = await supabase
       .from('projects')
       .select(COLUMNS)
-      .order('created_at', { ascending: true })
+      .order('created_at', { ascending: false })
 
     if (dbError) {
       console.error('[supabase] projects 조회 실패:', dbError)
