@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { videoSource } from '../lib/videoEmbed'
 
 /**
@@ -15,10 +15,23 @@ import { videoSource } from '../lib/videoEmbed'
  */
 export default function Article({ post, onBack, prev, next, position }) {
   const [copied, setCopied] = useState(false)
+  const root = useRef(null)
 
-  // 글이 바뀌면 맨 위에서 다시 읽기 시작합니다
+  /*
+    글이 바뀌면 맨 위에서 다시 읽기 시작합니다.
+
+    예전에는 window 를 0 으로 올렸는데, Works 의 글은 첫 화면(hero) 아래에
+    있으므로 글이 아니라 첫 화면이 보였습니다 — 글을 보려면 직접 내려야 했습니다.
+    이제 글 자체를 위쪽 띠 바로 아래로 올립니다.
+  */
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    const el = root.current
+    if (!el) return
+
+    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 68
+    const top = el.getBoundingClientRect().top + window.scrollY - navH - 12
+
+    window.scrollTo({ top: Math.max(0, top), behavior: 'instant' })
   }, [post.id])
 
   useEffect(() => {
@@ -44,7 +57,7 @@ export default function Article({ post, onBack, prev, next, position }) {
   const video = videoSource(post.video)
 
   return (
-    <article className="wrap section article" key={post.id}>
+    <article className="wrap section article" key={post.id} ref={root}>
       <button className="article__back" onClick={onBack}>
         ← {post.backLabel}
       </button>

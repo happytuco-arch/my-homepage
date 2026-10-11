@@ -4869,3 +4869,93 @@ html {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* ════════════════════════════════════════════════════════════
+   세 가지 바로잡기 — 전체 목록 · 글의 사진 높이 · 대표작 옆 빈자리
+   ════════════════════════════════════════════════════════════ */
+
+/* ① 'View all' — 크기가 같은 칸을 줄 맞춰 늘어놓습니다.
+
+   전에는 전체 보기도 '대표작 1 + 2×2' 틀을 그대로 써서, 첫 점만 화면을
+   가로지르고 나머지는 두 줄로 흩어졌습니다. 목록으로 읽히지 않았습니다.
+   사진 비율이 제각각이므로 칸의 사진 자리 높이를 하나로 고정하고,
+   그 안에서 contain 으로 맞춥니다 — 잘리지 않으면서 줄이 맞습니다. */
+.allworks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: clamp(26px, 3vw, 44px) clamp(18px, 2vw, 32px);
+  align-items: start;
+}
+
+.allworks .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.allworks .card__figure {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: clamp(150px, 19vh, 215px);
+  background: none;
+}
+
+.allworks .card__img {
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+  margin: 0;
+}
+
+.allworks .card__body {
+  flex: none;
+  padding-top: 10px;
+}
+
+.allworks .card__sub {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.allworks .card__more {
+  display: inline-block;
+}
+
+/* ② 글 안의 표지 사진 — 한 화면을 넘지 않게 높이에 상한을 둡니다.
+   세로로 긴 사진(포스터 등)이 화면보다 길어서 끝이 잘려 보였습니다. */
+.article__cover img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 76vh;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* ③ 대표작 칸을 사진 폭에 맞춥니다.
+   칸을 1.15fr 로 고정해 두어서, 세로로 긴 사진이 들어오면 사진은 왼쪽에만
+   차고 오른쪽 절반이 비었습니다. 이제 칸이 사진만큼만 차지하고
+   남는 폭은 오른쪽 2×2 가 가져갑니다. (화면의 56% 까지만) */
+@media (min-width: 861px) and (min-height: 700px) {
+  .snap--work:not(:has(.panel--expanded)) .panel__body > .feature {
+    grid-template-columns: fit-content(56%) minmax(0, 1fr);
+  }
+}
+
+/* ④ 세로로 긴 사진(포스터 등)의 썸네일을 칸 가운데에 둡니다.
+
+   칸의 사진 자리는 가로로 넓습니다. 왼쪽 맞춤이면 가로 사진은 꽉 차지만
+   세로 사진은 왼쪽에만 붙고 오른쪽이 통째로 비어 보였습니다.
+   가로 사진은 어차피 폭을 다 쓰므로 이 규칙에 영향을 받지 않고,
+   세로 사진만 가운데로 옵니다. (잘라서 채우지는 않습니다 — 포스터는 글자가 있습니다) */
+.allworks .card__figure,
+.feature__side .card__figure {
+  justify-content: center;
+}
+
+.allworks .card__img,
+.feature__side .card__img {
+  object-position: center;
+}

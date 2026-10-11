@@ -82,18 +82,30 @@ export default function GamesTab() {
 
         {status === 'ready' && items.length > 0 && (
           <>
-            {/* 왼쪽에 대표작 한 점, 오른쪽에 나머지를 2×2 로 */}
-            <div className="feature">
-              <ProjectCard item={shown[0]} size="lg" onOpen={reader.openPost} />
+            {/*
+              고른 몇 점을 걸 때와 전부를 걸 때는 배치가 달라야 합니다.
+              몇 점일 때는 대표작을 크게(왼쪽 1 + 오른쪽 2×2),
+              전부일 때는 크기가 같은 칸을 줄 맞춰 늘어놓습니다 — 목록이니까요.
+            */}
+            {showAll ? (
+              <div className="allworks">
+                {items.map((item) => (
+                  <ProjectCard key={item.id} item={item} size="sm" onOpen={reader.openPost} />
+                ))}
+              </div>
+            ) : (
+              <div className="feature">
+                <ProjectCard item={shown[0]} size="lg" onOpen={reader.openPost} />
 
-              {shown.length > 1 && (
-                <div className="feature__side">
-                  {shown.slice(1).map((item) => (
-                    <ProjectCard key={item.id} item={item} size="sm" onOpen={reader.openPost} />
-                  ))}
-                </div>
-              )}
-            </div>
+                {shown.length > 1 && (
+                  <div className="feature__side">
+                    {shown.slice(1).map((item) => (
+                      <ProjectCard key={item.id} item={item} size="sm" onOpen={reader.openPost} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* 가려진 작품이 있을 때만 — 보고 싶은 사람은 전부 볼 수 있게 */}
             {items.length > selection.length && (
