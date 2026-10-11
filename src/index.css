@@ -4969,7 +4969,9 @@ html {
    다 들어옵니다. 좁은 화면에서는 예전처럼 위아래로 쌓습니다.
    ════════════════════════════════════════════════════════════ */
 
-@media (min-width: 1000px) {
+/* 화면이 낮으면(가로로 눕힌 폰) 좌우로 나눠 봐야 사진이 손톱만 해집니다.
+   그럴 때는 위아래로 쌓고 스크롤하게 둡니다. */
+@media (min-width: 760px) and (min-height: 560px) {
   .article__top {
     display: grid;
     grid-template-columns: minmax(0, 1fr) fit-content(46%);
@@ -4992,8 +4994,8 @@ html {
   }
 }
 
-/* 좁은 화면 — 쌓이므로 상한은 그대로 둡니다 */
-@media (max-width: 999px) {
+/* 좁거나 낮은 화면 — 쌓이므로 상한은 그대로 둡니다 */
+@media (max-width: 759px), (max-height: 559px) {
   .article__media .article__cover:first-child {
     margin-top: clamp(24px, 3.6vw, 40px);
   }
