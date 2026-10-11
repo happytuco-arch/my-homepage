@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import Article from './Article'
 import { useProjects } from '../lib/useProjects'
 import { useReader } from '../lib/useReader'
@@ -35,11 +35,38 @@ function pickForDisplay(items) {
  * 실패했을 때 예시 데이터로 덮지 않습니다. 화면이 멀쩡해 보이면
  * 연결이 끊긴 것을 눈치채지 못하기 때문입니다.
  */
-export default function GamesTab() {
+export default function GamesTab({ expand = 0 }) {
   const { status, items, error, reload } = useProjects()
   const [showAll, setShowAll] = useState(false)
   // 화면에 걸린 작품들 사이를 이어서 볼 수 있게 합니다
   const reader = useReader(items)
+
+  /*
+    상단 메뉴에서 Works 를 누르면 전체 목록을 폅니다.
+    메뉴를 누른 사람은 '작품 몇 점'이 아니라 '작품 전부'를 보러 온 것입니다.
+    (첫 화면에서 스크롤로 내려올 때는 예전처럼 고른 몇 점만 걸립니다)
+  */
+  useEffect(() => {
+    if (expand > 0) setShowAll(true)
+  }, [expand])
+
+  /*
+    목록을 편 뒤에 그 자리로 옮깁니다.
+
+    두 가지를 피해야 했습니다 —
+     · 펴기 전에 움직이면, 구역의 높이가 달라지면서 엉뚱한 곳에 섭니다.
+       그래서 화면이 다 바뀐 뒤(useLayoutEffect)에 움직입니다.
+     · 부드럽게(smooth) 움직이면 scroll-snap 이 첫 화면으로 되돌립니다.
+  */
+  useLayoutEffect(() => {
+    if (expand === 0 || !showAll) return
+
+    const el = document.getElementById('work')
+    if (!el) return
+
+    const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 68
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navH, behavior: 'instant' })
+  }, [expand, showAll])
 
   // 화면을 열 때 한 번만 고릅니다 (작품 목록이 바뀌면 다시 고릅니다)
   const selection = useMemo(() => pickForDisplay(items), [items])
@@ -135,6 +162,20 @@ function ProjectCard({ item, size, onOpen }) {
           // 한 번에 두세 점만 걸므로 미루지 않고 바로 불러옵니다.
           // loading="lazy" 를 쓰면 화면 안에 들어와도 불러오지 않는 경우가 있었습니다.
           <img className="card__img" src={item.image} alt={item.title} decoding="async" />
+        ) : item.video ? (
+          /*
+            사진이 없고 영상만 있는 작품 — 엉뚱한 사진을 끌어다 쓰지 않고
+            영상의 첫 장면을 그대로 보여 줍니다. (소리 없이, 멈춘 채로)
+          */
+          <video
+            className="card__img"
+            // #t=0.5 — 맨 첫 장면은 검은 화면인 경우가 많아 조금 뒤를 집습니다
+            src={`${item.video}#t=0.5`}
+            preload="metadata"
+            muted
+            playsInline
+            aria-label={item.title}
+          />
         ) : (
           <div className="ph" role="img" aria-label={`${item.title} — no image`}>
             <span className="ph__mark">No image</span>

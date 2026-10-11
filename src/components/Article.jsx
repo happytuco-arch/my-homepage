@@ -62,47 +62,59 @@ export default function Article({ post, onBack, prev, next, position }) {
         ← {post.backLabel}
       </button>
 
-      <header className="article__head">
-        <p className="post__meta">
-          {post.metas.filter(Boolean).map((m) => (
-            <span key={m}>{m}</span>
-          ))}
-        </p>
-        <h2 className="article__title">{post.title}</h2>
-        {post.lead && <p className="article__lead">{post.lead}</p>}
-
-        {post.chips.length > 0 && (
-          <div className="paper__keys article__chips">
-            {post.chips.map((c) => (
-              <span className="chip" key={c}>
-                {c}
-              </span>
+      {/* 넓은 화면에서는 글과 사진을 좌우로 나눕니다 — 사진이 화면 아래로
+          밀려나 끝이 보이지 않던 것을 막습니다 */}
+      <div className="article__top">
+        <header className="article__head">
+          <p className="post__meta">
+            {post.metas.filter(Boolean).map((m) => (
+              <span key={m}>{m}</span>
             ))}
-          </div>
-        )}
-      </header>
+          </p>
+          <h2 className="article__title">{post.title}</h2>
+          {post.lead && <p className="article__lead">{post.lead}</p>}
 
-      {post.cover && (
-        <div className="article__cover">
-          <img src={post.cover} alt={post.title} decoding="async" />
-        </div>
-      )}
+          {post.chips.length > 0 && (
+            <div className="paper__keys article__chips">
+              {post.chips.map((c) => (
+                <span className="chip" key={c}>
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
+        </header>
 
-      {video && (
-        <div className="article__cover">
-          {video.kind === 'embed' ? (
-            <iframe
-              className="detail__video"
-              src={video.src}
-              title={`${post.title} video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <video className="detail__video" src={video.src} poster={post.cover || undefined} controls preload="metadata" />
+        <div className="article__media">
+          {post.cover && (
+            <div className="article__cover">
+              <img src={post.cover} alt={post.title} decoding="async" />
+            </div>
+          )}
+
+          {video && (
+            <div className="article__cover">
+              {video.kind === 'embed' ? (
+                <iframe
+                  className="detail__video"
+                  src={video.src}
+                  title={`${post.title} video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <video
+                  className="detail__video"
+                  src={video.src}
+                  poster={post.cover || undefined}
+                  controls
+                  preload="metadata"
+                />
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
 
       {post.body.map((p, i) => (
         <p className="article__text" key={i}>

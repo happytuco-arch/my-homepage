@@ -31,6 +31,8 @@ function Site() {
   const { isAdmin } = useAdmin()
   const [view, setView] = useState('home')
   const [scrollTo, setScrollTo] = useState(null)
+  // 상단 메뉴의 Works 를 누른 횟수 — 누를 때마다 Works 가 전체 목록을 폅니다
+  const [worksAll, setWorksAll] = useState(0)
   // 'login' 또는 'panel' — 관리자 창이 열려 있는 상태
   const [admin, setAdmin] = useState(null)
 
@@ -44,8 +46,11 @@ function Site() {
     }
 
     setView('home')
-    if (target === 'games') setScrollTo('work')
-    else if (target === 'about' || target === 'contact') setScrollTo('contact')
+    if (target === 'games') {
+      // 메뉴로 들어올 때는 고른 몇 점이 아니라 전체 목록을 보여 줍니다
+      // 목록을 편 뒤에 움직여야 해서 스크롤은 Works 쪽에서 합니다
+      setWorksAll((n) => n + 1)
+    } else if (target === 'about' || target === 'contact') setScrollTo('contact')
     else setScrollTo('top')
   }
 
@@ -136,7 +141,7 @@ function Site() {
 
             {/* 2번째 화면 — Games */}
             <section className="snap snap--work" id="work">
-              <GamesTab />
+              <GamesTab expand={worksAll} />
             </section>
 
             {/* 3번째 화면 — About &amp; Contact */}
