@@ -31,6 +31,7 @@ export function projectToPost(item) {
     lead: item.description,
     cover: item.image,
     video: item.video,
+    links: item.linkUrl ? [{ label: '자료 보기', href: item.linkUrl }] : [],
     facts: [
       { label: 'Registered', value: item.dateLabel || '—' },
       { label: 'Source', value: 'Supabase · projects' },

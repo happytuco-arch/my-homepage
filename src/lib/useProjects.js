@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { configMessage, isSupabaseReady, mediaUrl, supabase } from './supabase'
 
 /** 표에서 읽어 오는 칸 */
-const COLUMNS = 'id, title, description, image_url, video_url, pinned, created_at'
+const COLUMNS = 'id, title, description, image_url, video_url, link_url, pinned, created_at'
 
 /**
  * 관리자 화면에서 작품을 고치면 방문자용 목록도 같이 새로 고쳐야 합니다.
@@ -84,6 +84,8 @@ function normalize(row, i) {
     // 항상 첫 번째로 걸어 둘 작품인지 (관리자 화면에서 체크합니다)
     pinned: Boolean(row.pinned),
     // 관리자 화면에서 고칠 때는 표에 들어 있는 원래 값이 필요합니다
+    // 결과물·원문으로 이어지는 주소 (포스터 PDF, 배포 링크 등)
+    linkUrl: row.link_url?.trim() || '',
     imageRaw: row.image_url || '',
     videoRaw: row.video_url || '',
     createdAt: at,

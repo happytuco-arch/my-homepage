@@ -82,12 +82,13 @@ export async function deleteProject(id) {
 }
 
 /** 화면의 입력값을 표의 칸 이름으로 옮깁니다 */
-function toRow({ title, description, imageUrl, videoUrl, pinned }) {
+function toRow({ title, description, imageUrl, videoUrl, linkUrl, pinned }) {
   return {
     title: title.trim(),
     description: description.trim() || null,
     image_url: imageUrl?.trim() || null,
     video_url: videoUrl?.trim() || null,
+    link_url: linkUrl?.trim() || null,
     pinned: Boolean(pinned),
   }
 }

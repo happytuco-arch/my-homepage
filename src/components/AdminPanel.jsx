@@ -12,7 +12,15 @@ import { useProjects } from '../lib/useProjects'
 import AdminPapers from './AdminPapers'
 import AdminAssignments from './AdminAssignments'
 
-const EMPTY = { id: null, title: '', description: '', imageUrl: '', videoUrl: '', pinned: false }
+const EMPTY = {
+  id: null,
+  title: '',
+  description: '',
+  imageUrl: '',
+  videoUrl: '',
+  linkUrl: '',
+  pinned: false,
+}
 
 function formatSize(bytes) {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`
@@ -69,6 +77,7 @@ export default function AdminPanel({ onClose }) {
       description: item.description,
       imageUrl: item.imageRaw || '',
       videoUrl: item.videoRaw || '',
+      linkUrl: item.linkUrl || '',
       pinned: Boolean(item.pinned),
     })
     setFiles({ image: null, video: null })
@@ -252,6 +261,19 @@ export default function AdminPanel({ onClose }) {
               value={form.description}
               onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
               placeholder="어떤 작품인지 한두 문장"
+            />
+          </label>
+
+          <label className="field">
+            <span className="field__label">
+              자료 주소 <i>선택 · PDF · 배포 링크 · 깃헙 등</i>
+            </span>
+            <input
+              className="field__input"
+              type="url"
+              value={form.linkUrl}
+              onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))}
+              placeholder="https://…"
             />
           </label>
 
