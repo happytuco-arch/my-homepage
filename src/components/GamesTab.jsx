@@ -4,28 +4,22 @@ import { useProjects } from '../lib/useProjects'
 import { useReader } from '../lib/useReader'
 import { projectToPost } from '../lib/toPost'
 
+/** 한 화면에 걸 작품 수 — 대표작 1 + 오른쪽 2×2 */
+const LEAD_COUNT = 5
+
 /**
- * 화면에 걸 작품을 고릅니다.
+ * 작품을 걸 순서를 정합니다.
  *
- *  · 대표 작품(항상 첫 번째)은 언제나 맨 앞에 옵니다
- *  · 나머지는 그중 두세 점만 무작위로 골라 겁니다
+ *  · 대표 작품('항상 첫 번째')이 있으면 언제나 맨 앞
+ *  · 나머지는 올린 순서대로
  *
- * 고르는 일은 화면을 열 때 한 번만 합니다. 스크롤하다 그림이 바뀌면 어지럽습니다.
+ * 예전에는 무작위로 골랐습니다. 볼 때마다 다른 작품이 걸리는 재미가
+ * 있었지만, 무엇이 걸릴지 내가 정할 수 없고 "아까 본 그것"을 다시
+ * 찾기도 어려웠습니다. 순서를 정해 두는 편이 낫습니다.
  */
-function pickForDisplay(items) {
-  const lead = items.find((i) => i.pinned) ?? items[0]
-  const rest = items.filter((i) => i !== lead)
-
-  // 네 점 — 오른쪽에 2×2 로 걸립니다
-  const want = Math.min(rest.length, 4)
-
-  const pool = [...rest]
-  const picked = []
-  while (picked.length < want) {
-    picked.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0])
-  }
-
-  return lead ? [lead, ...picked] : []
+function inOrder(items) {
+  const lead = items.find((i) => i.pinned)
+  return lead ? [lead, ...items.filter((i) => i !== lead)] : items
 }
 
 /**
@@ -38,8 +32,10 @@ function pickForDisplay(items) {
 export default function GamesTab({ expand = 0 }) {
   const { status, items, error, reload } = useProjects()
   const [showAll, setShowAll] = useState(false)
-  // 화면에 걸린 작품들 사이를 이어서 볼 수 있게 합니다
-  const reader = useReader(items)
+  // 작품 목록이 바뀔 때만 다시 셉니다
+  const ordered = useMemo(() => inOrder(items), [items])
+  // 화면에 걸린 작품들 사이를 이어서 볼 수 있게 합니다 (보이는 차례 그대로)
+  const reader = useReader(ordered)
 
   /*
     상단 메뉴에서 Works 를 누르면 전체 목록을 폅니다.
@@ -68,13 +64,11 @@ export default function GamesTab({ expand = 0 }) {
     window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navH, behavior: 'instant' })
   }, [expand, showAll])
 
-  // 화면을 열 때 한 번만 고릅니다 (작품 목록이 바뀌면 다시 고릅니다)
-  const selection = useMemo(() => pickForDisplay(items), [items])
-  const shown = showAll ? items : selection
+  const shown = showAll ? ordered : ordered.slice(0, LEAD_COUNT)
 
   const note =
     status === 'ready' && items.length > 0
-      ? `${shown.length} of ${items.length} — the selection changes each visit.`
+      ? `${shown.length} of ${items.length} — in the order they were added.`
       : 'From the projects table.'
 
   if (reader.open) {
@@ -116,7 +110,7 @@ export default function GamesTab({ expand = 0 }) {
             */}
             {showAll ? (
               <div className="allworks">
-                {items.map((item) => (
+                {ordered.map((item) => (
                   <ProjectCard key={item.id} item={item} size="sm" onOpen={reader.openPost} />
                 ))}
               </div>
@@ -135,7 +129,7 @@ export default function GamesTab({ expand = 0 }) {
             )}
 
             {/* 가려진 작품이 있을 때만 — 보고 싶은 사람은 전부 볼 수 있게 */}
-            {items.length > selection.length && (
+            {items.length > LEAD_COUNT && (
               <button
                 className="showall"
                 type="button"
