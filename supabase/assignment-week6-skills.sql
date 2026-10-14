@@ -80,8 +80,8 @@ frontend-slides (30,489★, MIT)            HTML 슬라이드$prompt$,
     {"name": "B 프롬프트 (.md)", "url": "https://github.com/happytuco-arch/week6_skills_package/blob/main/B_with_skills/prompt.md", "type": "link"},
     {"name": "A/B 비교 기록 (.md)", "url": "https://github.com/happytuco-arch/week6_skills_package/blob/main/COMPARISON.md", "type": "link"},
     {"name": "스킬 묶음 — 출처·라이선스 (.md)", "url": "https://github.com/happytuco-arch/week6_skills_package/blob/main/B_with_skills/skills/ATTRIBUTION.md", "type": "link"},
-    {"name": "A 결과물 (.pptx)", "url": "https://github.com/happytuco-arch/week6_skills_package/raw/main/A_without_skills/output/%EC%84%A0%ED%96%89%EC%97%B0%EA%B5%AC%EC%A1%B0%EC%82%AC_%EA%B2%8C%EC%9E%84%EB%8B%89%EB%84%A4%EC%9E%84.pptx", "type": "file"},
-    {"name": "B 결과물 (.pptx)", "url": "https://github.com/happytuco-arch/week6_skills_package/raw/main/B_with_skills/output/%EC%84%A0%ED%96%89%EC%97%B0%EA%B5%AC%EC%A1%B0%EC%82%AC_%EA%B2%8C%EC%9E%84%EB%8B%89%EB%84%A4%EC%9E%84_B.pptx", "type": "file"}
+    {"name": "A 결과물 (.pptx)", "url": "https://github.com/happytuco-arch/week6_skills_package/raw/main/A_without_skills/%EC%84%A0%ED%96%89%EC%97%B0%EA%B5%AC%EC%A1%B0%EC%82%AC_%EA%B2%8C%EC%9E%84%EB%8B%89%EB%84%A4%EC%9E%84.pptx", "type": "file"},
+    {"name": "B 결과물 (.pptx)", "url": "https://github.com/happytuco-arch/week6_skills_package/raw/main/B_with_skills/%EC%84%A0%ED%96%89%EC%97%B0%EA%B5%AC%EC%A1%B0%EC%82%AC_%EA%B2%8C%EC%9E%84%EB%8B%89%EB%84%A4%EC%9E%84_B.pptx", "type": "file"}
   ]'::jsonb,
 
   '2026-10-15 12:00:00+09'
