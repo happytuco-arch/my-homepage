@@ -41,7 +41,17 @@ set
 J 와 H 를 하나의 가는 선으로 이은 기하학적 모노그램,
 near-black(#111110) 선, warm off-white(#FAF9F7) 배경.
 그라데이션·그림자·3D·테두리 없이 평면 벡터 느낌으로.
-글자나 태그라인은 넣지 마.$prompt$,
+글자나 태그라인은 넣지 마.
+
+[5] 사이트와 명함을 꾸밀 그래픽
+
+미니멀한 추상 선 그래픽을 생성해줘.
+가는 선들이 겹쳐 흐르며 긴 가로 파형을 이루는 형태,
+등고선이나 음파 다이어그램 같은 느낌.
+near-black(#111110) 균일한 가는 선, warm off-white(#FAF9F7) 배경.
+선은 오른쪽에 모이고 왼쪽으로 갈수록 흩어져 빈 공간으로 사라지게.
+스위스 그래픽 디자인처럼 조용하고 절제되게, 평면 벡터 느낌으로.
+그라데이션·그림자·3D·색·글자·테두리 없이.$prompt$,
 
   note = $note$실제로 돌아가는 포트폴리오 사이트를 Figma 안에 편집 가능한 레이어로 옮겼습니다. Claude Code 를 Figma 에 플러그인(MCP)으로 연결해서 작업했습니다.
 
@@ -51,7 +61,7 @@ near-black(#111110) 선, warm off-white(#FAF9F7) 배경.
 
 막혔던 곳도 적어 둡니다. 제 Figma 는 무료(Starter) 플랜에 View 좌석이라 "쓰기는 Professional 이상이어야 한다"는 자료가 많았습니다. 그런데 실제로 호출해 보니 읽기도 쓰기도 됐습니다. 문서만 보고 포기하지 않고 한 번 붙여 본 것이 맞았습니다.
 
-브로슈어는 사람 소개가 아니라 사이트를 중심으로 다시 짰습니다. 사이트 화면 축소본을 붙이고, 네 갈래 구성(Works · Papers · Assignments · About)과 사용 기술(React · Vite · Supabase · Vercel)을 넣었습니다. 로고는 Figma 의 이미지 생성으로 뽑은 JH 모노그램이고, 명함 오른쪽 위에 실제로 얹었습니다.$note$,
+브로슈어는 사람 소개가 아니라 사이트를 중심으로 다시 짰습니다. 사이트 화면 축소본을 붙이고, 네 갈래 구성(Works · Papers · Assignments · About)과 사용 기술(React · Vite · Supabase · Vercel)을 넣었습니다. 로고는 Figma 의 이미지 생성으로 뽑은 JH 모노그램이고, 명함 왼쪽 아래에 실제로 얹었습니다.$note$,
 
   result_url = 'https://www.figma.com/design/qXUZkLMT9F3yIu1NiBKM0x/%EB%9E%9C%EB%94%A9%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%94%94%EC%9E%90%EC%9D%B8-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83?node-id=0-1',
   image_url = null,
