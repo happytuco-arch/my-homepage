@@ -77,6 +77,7 @@ function normalize(row, i) {
       name: a?.name || '파일',
       url: mediaUrl(a?.url),
       isImage: a?.type === 'image',
+      isVideo: a?.type === 'video',
     })).filter((a) => a.url),
     dateLabel: at ? at.toLocaleDateString('ko-KR') : '',
     raw: row,

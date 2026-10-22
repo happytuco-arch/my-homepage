@@ -81,9 +81,11 @@ export function assignmentToPost(item) {
     metas: [item.week, item.course, item.dateLabel].filter(Boolean),
     lead: item.note,
     cover: item.image,
+    // 첨부 중 첫 영상(type: "video")은 글 안에서 바로 재생합니다
+    video: item.attachments.find((a) => a.isVideo)?.url || '',
     prompt: item.prompt,
     images: item.attachments.filter((a) => a.isImage),
-    files: item.attachments.filter((a) => !a.isImage),
+    files: item.attachments.filter((a) => !a.isImage && !a.isVideo),
     links: item.resultUrl ? [{ label: '결과물 보기', href: item.resultUrl }] : [],
   }
 }
