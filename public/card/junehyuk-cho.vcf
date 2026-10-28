@@ -2,8 +2,9 @@ BEGIN:VCARD
 VERSION:3.0
 N:Cho;JuneHyuk;;;
 FN:JuneHyuk Cho
-ORG:Sungkyunkwan University
-TITLE:Game Design & Research
+ORG:Sungkyunkwan University;College of Art, Dept. of Game Design
+TITLE:Master's Student, Game Design & Research
 EMAIL;TYPE=INTERNET,WORK:happytuco@g.skku.edu
 URL:https://my-homepage-jh-f22e.vercel.app
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/%EC%A1%B0%EC%A4%80%ED%98%81-%EA%B2%8C%EC%9E%84%EB%94%94%EC%9E%90%EC%9D%B8%ED%95%99%EA%B3%BC-a4b757435/
 END:VCARD
