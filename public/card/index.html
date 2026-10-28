@@ -73,8 +73,11 @@
   .degree { position: absolute; left: 9cqw; top: 31.4cqw; font-size: 2.5cqw; line-height: 1.35; color: var(--muted); }
   .org  { position: absolute; left: 9cqw; top: 41.6cqw; font-size: 3.4cqw; color: var(--muted); }
   .leaf { position: absolute; left: 79.8cqw; top: 38cqw; width: 6.2cqw; }
-  .mail { position: absolute; left: 9cqw; top: 36.6cqw; font-size: 3.4cqw; font-weight: 600; }
-  .url  { position: absolute; left: 9cqw; top: 42.6cqw; font-size: 2.9cqw; color: var(--blue); }
+  .mail { position: absolute; left: 9cqw; top: 40.6cqw; font-size: 3.4cqw; font-weight: 600; }
+  /* 뒷면 — 홈페이지로 가는 QR (주소 글자 대신) */
+  .home-qr { position: absolute; right: 9cqw; top: 21cqw; margin: 0; text-align: center; }
+  .home-qr img { display: block; width: 19cqw; height: 19cqw; padding: 1.4cqw; background: #fff; }
+  .home-qr figcaption { margin-top: .6cqw; font-size: 2cqw; color: var(--blue); letter-spacing: .04em; }
   /* 학교 로고 — 원본 jpg 의 흰 여백을 잘라 내고 오른쪽 위에 둡니다 */
   .logo { position: absolute; right: 8cqw; top: 7cqw; width: 15cqw; aspect-ratio: 1; overflow: hidden; }
   .logo img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.75); transform-origin: 50% 48%; }
@@ -124,7 +127,10 @@
           <ellipse cx="330" cy="270" rx="230" ry="95" transform="rotate(-24 330 270)"/>
         </svg>
         <p class="mail">happytuco@g.skku.edu</p>
-        <p class="url">my-homepage-pi-wheat.vercel.app</p>
+        <figure class="home-qr">
+          <img src="/card/home-qr.svg" alt="QR code to the portfolio website">
+          <figcaption>Portfolio</figcaption>
+        </figure>
       </div>
     </div>
   </button>
