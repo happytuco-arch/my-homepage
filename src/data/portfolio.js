@@ -57,9 +57,8 @@ export const about = {
   quote: 'I keep the judgement, not just the result.',
   line: 'Games teach through the body, papers through sentences. Both ask what makes learning feel good.',
   facts: [
-    { label: 'Focus', value: 'Game systems · Learning experience' },
-    { label: 'Tools', value: 'Unity · Aseprite · Python · React' },
-    { label: 'Writing', value: 'HCI · Game studies · Education' },
+    { label: 'Focus', value: 'Game systems · Data analysis' },
+    { label: 'Tools', value: 'Unity' },
     { label: 'Status', value: 'Open to collaboration' },
   ],
 }
