@@ -5041,3 +5041,29 @@ html {
 .shots a:hover img {
   border-color: transparent;
 }
+
+/* About 의 디지털 명함 QR */
+.about__qr {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+
+.about__qr img {
+  display: block;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+}
+
+.about__qr:hover {
+  opacity: 1;
+}

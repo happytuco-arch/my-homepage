@@ -44,6 +44,12 @@ export default function AboutContact() {
             )
           })}
         </div>
+
+        {/* 학회에서 화면을 보여 주면 상대가 찍는 디지털 명함 QR (public/card/) */}
+        <a className="about__qr" href="/card/" target="_blank" rel="noopener noreferrer">
+          <img src="/card/qr.svg" alt="디지털 명함 QR 코드" width="112" height="112" />
+          <span>Scan for my digital card</span>
+        </a>
       </div>
 
       {/* 아래에 가로 한 줄로 얹는 명세 */}
